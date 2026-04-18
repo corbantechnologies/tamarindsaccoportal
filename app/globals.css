@@ -2,70 +2,80 @@
 @import "tw-animate-css";
 
 :root {
+  --greenStroke: #045e32;
   --background: #ffffff;
-  --foreground: #0f172a;
+  --foreground: #000000;
 
   --card: #ffffff;
-  --card-foreground: #0f172a;
+  --card-foreground: #000000;
 
   --popover: #ffffff;
-  --popover-foreground: #0f172a;
+  --popover-foreground: #000000;
 
-  /* Sprout Capital Brand Colors */
-  --primary: #D4AF37;
-  /* Wananchi Gold */
+  --primary: #cc5500;
   --primary-foreground: #ffffff;
 
-  --secondary: #f8fafc;
-  --secondary-foreground: #0f172a;
+  --secondary: #f5f5f5;
+  --secondary-foreground: #000000;
 
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
+  --muted: #f5f5f5;
+  --muted-foreground: #666666;
 
-  --accent: #174271;
-  /* Accent Color (e.g., deep blue) */
+  --accent: #cc5500;
   --accent-foreground: #ffffff;
 
-  --destructive: #dc2626;
+  --destructive: #ef4444;
   --destructive-foreground: #ffffff;
 
-  --border: #e2e8f0;
-  --input: #e2e8f0;
-  --ring: #D4AF37;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
+  --ring: #cc5500;
 
-  --success: #16a34a;
+  --success: #22c55e;
   --success-foreground: #ffffff;
 
-  --warning: #ca8a04;
-  --warning-foreground: #ffffff;
+  --warning: #facc15;
+  --warning-foreground: #000000;
 
-  --info: #2563eb;
+  --info: #3b82f6;
   --info-foreground: #ffffff;
 
-  --radius: 0.25rem;
-  /* Corporate 4px radius */
+  --gradient-primary: linear-gradient(135deg, #cc5500, #e66b00);
+  --gradient-subtle: linear-gradient(180deg, #ffffff, #f5f5f5);
+
+  --shadow-card: 0 4px 6px -1px rgba(204, 85, 0, 0.1), 0 2px 4px -2px rgba(204, 85, 0, 0.1);
+  --shadow-card-hover: 0 10px 15px -3px rgba(204, 85, 0, 0.1), 0 4px 6px -4px rgba(204, 85, 0, 0.1);
+
+  --radius: 0.5rem;
 
   --sidebar-background: #ffffff;
-  --sidebar-foreground: #0f172a;
-  --sidebar-primary: #D4AF37;
+  --sidebar-foreground: #000000;
+  --sidebar-primary: #cc5500;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f8fafc;
-  --sidebar-accent-foreground: #0f172a;
-  --sidebar-border: #e2e8f0;
-  --sidebar-ring: #D4AF37;
-}
-
-.admin-theme {
-  --primary: #174271;
-  /* Distinct Admin Color */
-  --ring: #174271;
-  --sidebar-primary: #174271;
-  --sidebar-ring: #174271;
+  --sidebar-accent: #f5f5f5;
+  --sidebar-accent-foreground: #000000;
+  --sidebar-border: #e5e5e5;
+  --sidebar-ring: #cc5500;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -82,49 +92,49 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: calc(var(--radius) - 2px);
-  --radius-md: var(--radius);
-  --radius-lg: calc(var(--radius) + 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 }
 
 .dark {
-  --background: #0f172a;
-  --foreground: #f8fafc;
+  --background: #000000;
+  --foreground: #ffffff;
 
-  --card: #0f172a;
-  --card-foreground: #f8fafc;
+  --card: #000000;
+  --card-foreground: #ffffff;
 
-  --popover: #0f172a;
-  --popover-foreground: #f8fafc;
+  --popover: #000000;
+  --popover-foreground: #ffffff;
 
-  --primary: #174271;
+  --primary: #cc5500;
   --primary-foreground: #ffffff;
 
-  --secondary: #1e293b;
-  --secondary-foreground: #f8fafc;
+  --secondary: #333333;
+  --secondary-foreground: #ffffff;
 
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8;
+  --muted: #333333;
+  --muted-foreground: #999999;
 
-  --accent: #174271;
+  --accent: #cc5500;
   --accent-foreground: #ffffff;
 
-  --destructive: #ef4444;
+  --destructive: #dc2626;
   --destructive-foreground: #ffffff;
 
-  --border: #334155;
-  --input: #334155;
-  --ring: #174271;
+  --border: #444444;
+  --input: #444444;
+  --ring: #cc5500;
 
-  --sidebar-background: #0f172a;
-  --sidebar-foreground: #f8fafc;
-  --sidebar-primary: #174271;
+  --sidebar-background: #000000;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #cc5500;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1e293b;
-  --sidebar-accent-foreground: #f8fafc;
-  --sidebar-border: #334155;
-  --sidebar-ring: #174271;
+  --sidebar-accent: #333333;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #444444;
+  --sidebar-ring: #cc5500;
 }
 
 @layer base {

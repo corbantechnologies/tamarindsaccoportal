@@ -131,7 +131,7 @@ export default function SaccoAdminNavbar() {
         <div className="mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/sacco-admin/dashboard" className="flex items-center gap-2">
             <span className="text-xl md:text-2xl font-bold tracking-tight">
-              Sprout Capital Sacco
+              Tamarind Sacco
               <span className="text-[10px] font-normal uppercase tracking-[2px] opacity-75 ml-1.5">ADMIN</span>
             </span>
           </Link>

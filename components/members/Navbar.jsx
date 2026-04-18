@@ -20,7 +20,7 @@ function MemberNavbar() {
         <div className="mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/member/dashboard" className="flex items-center gap-2">
             <span className="text-xl md:text-2xl font-bold tracking-tight">
-              Sprout Capital Sacco
+              Tamarind Sacco
             </span>
           </Link>
           <div className="flex items-center gap-4">

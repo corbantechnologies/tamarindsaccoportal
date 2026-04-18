@@ -1,1 +1,1 @@
-# Sprout Capital Sacco
+# Tamarind Sacco
