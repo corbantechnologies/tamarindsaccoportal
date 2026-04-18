@@ -34,10 +34,12 @@ function CreateMember({ closeModal, openModal }) {
         <Formik
           initialValues={{
             first_name: "",
+            middle_name: "",
             last_name: "",
             email: "",
-            employer: "", // a select field with options: Tamarind Management Limited, and others. If Tamarind Management Limited, payroll_no is a must
-            payroll_no: '', // optional
+            employer: "", // a select field with options: Tamarind Management Limited, and others. If Tamarind Management Limited, payroll_no and employment_type are a must
+            employment_type: "", // a select field with options: Permanent, Contract, Temporary, Intern, Other
+            payroll_no: '', // required if employer is Tamarind Management Limited and employment_type is Permanent, or Contract, otherwise it is optional
             phone: "",
             gender: "",
             member_no: "",
@@ -72,7 +74,7 @@ function CreateMember({ closeModal, openModal }) {
                     type="text"
                     name="member_no"
                     id="member_no"
-                    placeholder="e.g. SCS-001"
+                    placeholder="e.g. M0001"
                     className="border-black   rounded text-base py-2"
                   />
                 </div>
@@ -90,6 +92,23 @@ function CreateMember({ closeModal, openModal }) {
                     name="first_name"
                     id="first_name"
                     placeholder="John"
+                    className="border-black   rounded text-base py-2"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="middle_name"
+                    className="text-base text-black font-medium"
+                  >
+                    Middle Name
+                  </Label>
+                  <Field
+                    as={Input}
+                    type="text"
+                    name="middle_name"
+                    id="middle_name"
+                    placeholder="Doe"
                     className="border-black   rounded text-base py-2"
                   />
                 </div>
@@ -150,6 +169,35 @@ function CreateMember({ closeModal, openModal }) {
                 </div>
 
                 {values.employer === "Tamarind Management Limited" && (
+
+                  <>
+                    <div className="space-y-2">
+                      <Label
+                        htmlFor="employment_type"
+                        className="text-base text-black font-medium"
+                      >
+                        Employment Type
+                      </Label>
+                      <Field
+                        as="select"
+                        name="employment_type"
+                        id="employment_type"
+                        className="w-full border border-black rounded px-3 py-2 text-base focus:ring-2   transition-colors"
+                      >
+                        <option value="">Select Employment Type</option>
+                        <option value="Permanent">Permanent</option>
+                        <option value="Contract">Contract</option>
+                        <option value="Casual">Casual</option>
+                        <option value="Intern">Intern</option>
+                        <option value="Other">Other</option>
+                      </Field>
+                    </div>
+
+
+                  </>
+                )}
+
+                {values.employer === "Tamarind Management Limited" && (values.employment_type === "Permanent" || values.employment_type === "Contract") && (
                   <div className="space-y-2">
                     <Label
                       htmlFor="payroll_no"
