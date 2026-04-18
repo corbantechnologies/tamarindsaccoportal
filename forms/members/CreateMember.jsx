@@ -40,9 +40,9 @@ function CreateMember({ closeModal, openModal }) {
             employer: "", // a select field with options: Tamarind Management Limited, and others. If Tamarind Management Limited, payroll_no and employment_type are a must
             employment_type: "", // a select field with options: Permanent, Contract, Temporary, Intern, Other
             payroll_no: '', // required if employer is Tamarind Management Limited and employment_type is Permanent, or Contract, otherwise it is optional
-            phone: "",
             gender: "",
             member_no: "",
+            password: "",
           }}
           onSubmit={async (values) => {
             try {
@@ -189,10 +189,11 @@ function CreateMember({ closeModal, openModal }) {
                         <option value="Contract">Contract</option>
                         <option value="Casual">Casual</option>
                         <option value="Intern">Intern</option>
+                        <option value="Self-Employed">Self-Employed</option>
+                        <option value="Not Employed">Not Employed</option>
                         <option value="Other">Other</option>
                       </Field>
                     </div>
-
 
                   </>
                 )}
@@ -211,27 +212,11 @@ function CreateMember({ closeModal, openModal }) {
                       name="payroll_no"
                       id="payroll_no"
                       placeholder="e.g. 12345"
-                      className="border-black   rounded text-base py-2"
+                      className="border-black rounded text-base py-2"
                     />
                   </div>
                 )}
 
-                <div className="space-y-2">
-                  <Label
-                    htmlFor="phone"
-                    className="text-base text-black font-medium"
-                  >
-                    Phone
-                  </Label>
-                  <Field
-                    as={Input}
-                    type="text"
-                    name="phone"
-                    id="phone"
-                    placeholder="254700000000"
-                    className="border-black   rounded text-base py-2"
-                  />
-                </div>
 
                 <div className="space-y-2">
                   <Label
@@ -246,9 +231,28 @@ function CreateMember({ closeModal, openModal }) {
                     name="email"
                     id="email"
                     placeholder="jdoe@example.com"
-                    className="border-black   rounded text-base py-2"
+                    className="border-black rounded text-base py-2"
                   />
                 </div>
+                {/* if no email provided, show the password input */}
+                {values.email === "" && (
+                  <div className="space-y-2">
+                    <Label
+                      htmlFor="password"
+                      className="text-base text-black font-medium"
+                    >
+                      Password
+                    </Label>
+                    <Field
+                      as={Input}
+                      type="password"
+                      name="password"
+                      id="password"
+                      placeholder="Enter your password"
+                      className="border-black rounded text-base py-2"
+                    />
+                  </div>
+                )}
               </div>
               <DialogFooter className="flex flex-col sm:flex-row gap-3 mt-6">
                 <Button
