@@ -16,14 +16,16 @@ function BulkMemberCreate({ closeModal, openModal }) {
     const router = useRouter();
 
     const emptyMember = {
-        member_no: "",
         first_name: "",
+        middle_name: "",
         last_name: "",
         email: "",
         employer: "",
+        employment_type: "",
         payroll_no: "",
-        phone: "",
         gender: "",
+        member_no: "",
+        password: "",
     };
 
     const [members, setMembers] = useState([{ ...emptyMember }]);
@@ -52,7 +54,6 @@ function BulkMemberCreate({ closeModal, openModal }) {
             const response = await createBulkMembers({ members }, token);
             toast?.success("Members created successfully!");
             closeModal();
-            // Reset state
             setMembers([{ ...emptyMember }]);
             router.refresh();
         } catch (error) {
@@ -106,6 +107,7 @@ function BulkMemberCreate({ closeModal, openModal }) {
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                                        {/* Member No */}
                                         <div className="space-y-2">
                                             <Label
                                                 htmlFor={`members-${index}-member_no`}
@@ -123,6 +125,7 @@ function BulkMemberCreate({ closeModal, openModal }) {
                                             />
                                         </div>
 
+                                        {/* First Name */}
                                         <div className="space-y-2">
                                             <Label
                                                 htmlFor={`members-${index}-first_name`}
@@ -140,6 +143,25 @@ function BulkMemberCreate({ closeModal, openModal }) {
                                             />
                                         </div>
 
+                                        {/* Middle Name - Added to sync */}
+                                        <div className="space-y-2">
+                                            <Label
+                                                htmlFor={`members-${index}-middle_name`}
+                                                className="text-base text-black font-medium"
+                                            >
+                                                Middle Name
+                                            </Label>
+                                            <Input
+                                                type="text"
+                                                id={`members-${index}-middle_name`}
+                                                placeholder="Kimani"
+                                                value={member.middle_name}
+                                                onChange={(e) => handleInputChange(index, "middle_name", e.target.value)}
+                                                className="border-black rounded text-base py-2"
+                                            />
+                                        </div>
+
+                                        {/* Last Name */}
                                         <div className="space-y-2">
                                             <Label
                                                 htmlFor={`members-${index}-last_name`}
@@ -157,6 +179,7 @@ function BulkMemberCreate({ closeModal, openModal }) {
                                             />
                                         </div>
 
+                                        {/* Gender */}
                                         <div className="space-y-2">
                                             <Label
                                                 htmlFor={`members-${index}-gender`}
@@ -176,6 +199,7 @@ function BulkMemberCreate({ closeModal, openModal }) {
                                             </select>
                                         </div>
 
+                                        {/* Employer */}
                                         <div className="space-y-2">
                                             <Label
                                                 htmlFor={`members-${index}-employer`}
@@ -197,48 +221,63 @@ function BulkMemberCreate({ closeModal, openModal }) {
                                             </select>
                                         </div>
 
+                                        {/* Employment Type - Only when Tamarind */}
                                         {member.employer === "Tamarind Management Limited" && (
                                             <div className="space-y-2">
                                                 <Label
-                                                    htmlFor={`members-${index}-payroll_no`}
+                                                    htmlFor={`members-${index}-employment_type`}
                                                     className="text-base text-black font-medium"
                                                 >
-                                                    Payroll Number
+                                                    Employment Type
                                                 </Label>
-                                                <Input
-                                                    type="text"
-                                                    id={`members-${index}-payroll_no`}
-                                                    placeholder="e.g. 12345"
-                                                    value={member.payroll_no}
-                                                    onChange={(e) => handleInputChange(index, "payroll_no", e.target.value)}
-                                                    className="border-black rounded text-base py-2"
-                                                />
+                                                <select
+                                                    id={`members-${index}-employment_type`}
+                                                    value={member.employment_type}
+                                                    onChange={(e) => handleInputChange(index, "employment_type", e.target.value)}
+                                                    className="w-full border border-black rounded px-3 py-2 text-base focus:ring-2 transition-colors bg-white h-10"
+                                                >
+                                                    <option value="">Select Employment Type</option>
+                                                    <option value="Permanent">Permanent</option>
+                                                    <option value="Contract">Contract</option>
+                                                    <option value="Casual">Casual</option>
+                                                    <option value="Intern">Intern</option>
+                                                    <option value="Self-Employed">Self-Employed</option>
+                                                    <option value="Not Employed">Not Employed</option>
+                                                    <option value="Other">Other</option>
+                                                </select>
                                             </div>
                                         )}
 
-                                        <div className="space-y-2">
-                                            <Label
-                                                htmlFor={`members-${index}-phone`}
-                                                className="text-base text-black font-medium"
-                                            >
-                                                Phone
-                                            </Label>
-                                            <Input
-                                                type="text"
-                                                id={`members-${index}-phone`}
-                                                placeholder="254700000000"
-                                                value={member.phone}
-                                                onChange={(e) => handleInputChange(index, "phone", e.target.value)}
-                                                className="border-black rounded text-base py-2"
-                                            />
-                                        </div>
+                                        {/* Payroll No - Only when Tamarind + (Permanent or Contract) */}
+                                        {member.employer === "Tamarind Management Limited" &&
+                                            (member.employment_type === "Permanent" || member.employment_type === "Contract") && (
+                                                <div className="space-y-2">
+                                                    <Label
+                                                        htmlFor={`members-${index}-payroll_no`}
+                                                        className="text-base text-black font-medium"
+                                                    >
+                                                        Payroll Number
+                                                    </Label>
+                                                    <Input
+                                                        type="text"
+                                                        id={`members-${index}-payroll_no`}
+                                                        placeholder="e.g. 12345"
+                                                        value={member.payroll_no}
+                                                        onChange={(e) => handleInputChange(index, "payroll_no", e.target.value)}
+                                                        className="border-black rounded text-base py-2"
+                                                    />
+                                                </div>
+                                            )}
 
+
+
+                                        {/* Email */}
                                         <div className="space-y-2">
                                             <Label
                                                 htmlFor={`members-${index}-email`}
                                                 className="text-base text-black font-medium"
                                             >
-                                                Email
+                                                Email (Optional)
                                             </Label>
                                             <Input
                                                 type="email"
@@ -249,6 +288,26 @@ function BulkMemberCreate({ closeModal, openModal }) {
                                                 className="border-black rounded text-base py-2"
                                             />
                                         </div>
+
+                                        {/* Password - Show only when no email (same as single create) */}
+                                        {member.email === "" && (
+                                            <div className="space-y-2">
+                                                <Label
+                                                    htmlFor={`members-${index}-password`}
+                                                    className="text-base text-black font-medium"
+                                                >
+                                                    Password
+                                                </Label>
+                                                <Input
+                                                    type="password"
+                                                    id={`members-${index}-password`}
+                                                    placeholder="Enter password"
+                                                    value={member.password}
+                                                    onChange={(e) => handleInputChange(index, "password", e.target.value)}
+                                                    className="border-black rounded text-base py-2"
+                                                />
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             ))}
