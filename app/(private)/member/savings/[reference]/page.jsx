@@ -192,14 +192,14 @@ function SavingsDetail() {
               {saving.account_number}
             </p>
           </div>
-          <div className="flex gap-3">
+          {/* <div className="flex gap-3">
             <Button
               className="bg-[#045e32] hover:bg-[#034625]"
               onClick={() => setDepositModalOpen(true)}
             >
               Deposit
             </Button>
-          </div>
+          </div> */}
         </div>
 
         {/* Tabs */}

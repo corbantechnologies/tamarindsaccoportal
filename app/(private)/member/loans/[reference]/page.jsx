@@ -126,12 +126,12 @@ function LoanDetail() {
                         <p className="text-muted-foreground font-mono">{loan.account_number}</p>
                     </div>
 
-                    <Button
+                    {/* <Button
                         className="bg-[#045e32] hover:bg-[#034625]"
                         onClick={() => setIsMpesaModalOpen(true)}
                     >
                         Make Repayment
-                    </Button>
+                    </Button> */}
                 </div>
 
                 {/* Tabs */}
