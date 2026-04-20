@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { resetPassword } from "@/services/members";
+import { passwordReset } from "@/services/members";
 import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 
 const ResetPassword = () => {
   const [code, setCode] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -30,16 +31,11 @@ const ResetPassword = () => {
     setLoading(true);
 
     try {
-      const response = await resetPassword({ code, password });
-      if (response?.status === "success" || response?.message) {
-        toast.success("Password reset successful! Please login.");
-        router.push("/login");
-      } else {
-        toast.error(response?.message || "Failed to reset password.");
-      }
+      const response = await passwordReset({ code, email, password });
+      toast.success("Password reset successful! Please login.");
+      router.push("/login");
     } catch (error) {
-      console.error(error);
-      toast.error("Something went wrong. Please try again.");
+      toast.error(error?.response?.data?.non_field_errors[0] || "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -74,6 +70,22 @@ const ResetPassword = () => {
                 className="border-black focus:ring-[#cc5500] focus:border-[#cc5500]"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
+                required
+              />
+            </div>
+
+            {/* email */}
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-black">
+                Email
+              </Label>
+              <Input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                className="border-black focus:ring-[#cc5500] focus:border-[#cc5500]"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
