@@ -1,20 +1,14 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff, Lock, User } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { getSession, signIn } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import toast from "react-hot-toast";
 
 function LoginForm() {
@@ -57,101 +51,85 @@ function LoginForm() {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto shadow-2xl border-white/20 bg-white/70 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 relative z-10 overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-accent"></div>
-      <CardHeader className="space-y-2 items-center text-center pb-6">
-        <div className="w-20 h-20 relative mb-2 mx-auto">
+    <div>
+      <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-8">
+        <div className="text-center mb-8">
           <Image
-            src="/logo.png"
-            alt="Tamarind Sacco Logo"
-            fill
-            className="object-contain"
+            src="/logoNoBg.png"
+            alt="Tamarind SACCO Logo"
+            width={100}
+            height={100}
+            className="mx-auto mb-4 rounded-full"
           />
+          <h1 className="text-3xl font-bold text-black">Tamarind SACCO</h1>
+          <p className="text-gray-500">The SACCO for everyone</p>
         </div>
-        <CardTitle className="text-2xl font-bold tracking-tight text-slate-900">
-          Welcome Back
-        </CardTitle>
-        <CardDescription className="text-gray-500 text-base">
-          Sign in to access your account
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <form onSubmit={handleSubmit} className="space-y-5">
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Payroll Number */}
           <div className="space-y-2">
-            <Label
-              htmlFor="member_no"
-              className="text-sm font-medium text-gray-700"
-            >
-              Member Number
+            <Label htmlFor="member_no" className="text-black">
+              Payroll Number
             </Label>
-            <div className="relative group">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5 group-focus-within:text-primary transition-colors" />
-              <Input
-                type="text"
-                id="member_no"
-                placeholder="Enter your member number"
-                className="h-11 pl-10 border-gray-200 focus:border-primary focus:ring-primary/20 transition-all bg-white/50"
-                value={member_no}
-                onChange={(e) => setMemberNo(e.target.value)}
-                required
-              />
-            </div>
+            <Input
+              type="text"
+              id="member_no"
+              placeholder="Enter your member number or payroll number"
+              className="border-black focus:ring-[#cc5500] focus:border-[#cc5500]"
+              value={member_no}
+              onChange={(e) => setMemberNo(e.target.value)}
+            />
           </div>
 
+          {/* Password */}
           <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label
-                htmlFor="password"
-                className="text-sm font-medium text-gray-700"
-              >
-                Password
-              </Label>
-              <a
-                href="/forgot-password"
-                className="text-xs text-primary hover:text-accent font-semibold hover:underline transition-colors"
-              >
-                Forgot Password?
-              </a>
-            </div>
-            <div className="relative group">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5 group-focus-within:text-primary transition-colors" />
+            <Label htmlFor="password" className="text-black">
+              Password
+            </Label>
+            <div className="relative">
               <Input
                 type={showPassword ? "text" : "password"}
                 id="password"
-                placeholder="Enter your password"
-                className="h-11 pl-10 pr-10 border-gray-200 focus:border-primary focus:ring-primary/20 transition-all bg-white/50"
+                placeholder="Password"
+                className="border-black focus:ring-[#cc5500] focus:border-[#cc5500]"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
               />
               <button
                 type="button"
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? (
-                  <EyeOff className="w-5 h-5" />
+                  <EyeOff className="w-5 h-5 text-gray-500" />
                 ) : (
-                  <Eye className="w-5 h-5" />
+                  <Eye className="w-5 h-5 text-gray-500" />
                 )}
               </button>
             </div>
           </div>
 
+          <div className="flex justify-end">
+            <Link
+              href="/forgot-password"
+              className="text-sm font-medium text-[#cc5500] hover:text-[#e66b00]"
+            >
+              Forgot Password?
+            </Link>
+          </div>
+
+          {/* Login Button */}
           <Button
             type="submit"
-            className="w-full h-11 text-base font-bold bg-gradient-to-r from-primary to-[#045e32] hover:bg-gradient-to-l hover:from-primary hover:to-[#045e32] shadow-lg shadow-primary/20 transition-all active:scale-[0.98]"
+            className="w-full bg-[#cc5500] hover:bg-[#e66b00] text-white"
             disabled={loading}
           >
             {loading ? "Logging in..." : "Login"}
           </Button>
-        </form>
 
-        <div className="text-center pt-2">
-          <p className="text-xs text-gray-400">Secure Access • Tamarind Sacco</p>
-        </div>
-      </CardContent>
-    </Card>
+        </form>
+      </div>
+    </div>
   );
 }
 

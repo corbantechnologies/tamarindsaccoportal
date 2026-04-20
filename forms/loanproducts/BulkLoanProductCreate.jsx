@@ -19,11 +19,11 @@ function BulkLoanProductCreate({ onBatchSuccess }) {
         name: "",
         interest_method: "Flat",
         interest_rate: 0,
-        processing_fee: 0,
+        // processing_fee: 0,
         gl_principal_asset: "",
         gl_interest_revenue: "",
-        gl_penalty_revenue: "",
-        gl_processing_fee_revenue: "",
+        // gl_penalty_revenue: "",
+        // gl_processing_fee_revenue: "",
     };
 
     const [products, setProducts] = useState([{ ...emptyProduct }]);
@@ -131,8 +131,8 @@ function BulkLoanProductCreate({ onBatchSuccess }) {
                                         onChange={(e) => handleInputChange(index, "interest_method", e.target.value)}
                                         className="w-full border border-slate-200 rounded px-3 py-1.5 text-sm transition-colors bg-white h-10 focus:outline-none focus:ring-1 focus:ring-[#174271] font-medium"
                                     >
-                                        <option value="Flat">Flat-rate</option>
                                         <option value="Reducing">Reducing Balance</option>
+                                        <option value="Flat">Flat-rate</option>
                                     </select>
                                 </div>
 
@@ -146,7 +146,7 @@ function BulkLoanProductCreate({ onBatchSuccess }) {
                                     />
                                 </div>
 
-                                <div className="md:col-span-3 space-y-1.5">
+                                {/* <div className="md:col-span-3 space-y-1.5">
                                     <Label className="text-[10px] font-semibold uppercase text-slate-400 tracking-tighter">Processing Fee (%)</Label>
                                     <Input
                                         type="number"
@@ -154,7 +154,7 @@ function BulkLoanProductCreate({ onBatchSuccess }) {
                                         onChange={(e) => handleInputChange(index, "processing_fee", e.target.value)}
                                         className="h-10 text-sm font-semibold border-slate-200 focus:border-[#174271] text-amber-600"
                                     />
-                                </div>
+                                </div> */}
 
                                 {/* Accounting Links */}
                                 <div className="md:col-span-12 pt-2">
@@ -192,7 +192,7 @@ function BulkLoanProductCreate({ onBatchSuccess }) {
                                     </select>
                                 </div>
 
-                                <div className="md:col-span-3 space-y-1.5">
+                                {/* <div className="md:col-span-3 space-y-1.5">
                                     <Label className="text-[10px] font-bold text-slate-500 italic">Penalty Revenue GL</Label>
                                     <select
                                         value={product.gl_penalty_revenue}
@@ -205,9 +205,9 @@ function BulkLoanProductCreate({ onBatchSuccess }) {
                                             <option key={gl.reference} value={gl.name}>{gl.name} ({gl.code})</option>
                                         ))}
                                     </select>
-                                </div>
+                                </div> */}
 
-                                <div className="md:col-span-3 space-y-1.5">
+                                {/* <div className="md:col-span-3 space-y-1.5">
                                     <Label className="text-[10px] font-bold text-slate-500 italic">Processing Fee GL</Label>
                                     <select
                                         value={product.gl_processing_fee_revenue}
@@ -220,7 +220,7 @@ function BulkLoanProductCreate({ onBatchSuccess }) {
                                             <option key={gl.reference} value={gl.name}>{gl.name} ({gl.code})</option>
                                         ))}
                                     </select>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     ))}

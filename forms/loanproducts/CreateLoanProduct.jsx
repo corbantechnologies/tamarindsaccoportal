@@ -43,11 +43,11 @@ function CreateLoanProduct({ isOpen, onClose, refetchLoanTypes }) {
             name: "",
             interest_method: "", //Choices are:  INTEREST_METHOD_CHOICES = [("Flat", "Flat-rate"),("Reducing", "Reducing (Diminishing) Balance"),]
             interest_rate: 0,
-            processing_fee: 0,
+            // processing_fee: 0,
             gl_principal_asset: "", //GL Account Name
-            gl_penalty_revenue: "", //GL Account Name
+            // gl_penalty_revenue: "", //GL Account Name
             gl_interest_revenue: "", //GL Account Name
-            gl_processing_fee_revenue: "", //GL Account Name
+            // gl_processing_fee_revenue: "", //GL Account Name
           }}
           onSubmit={async (values) => {
             try {
@@ -113,7 +113,7 @@ function CreateLoanProduct({ isOpen, onClose, refetchLoanTypes }) {
                 />
               </div>
 
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <Label htmlFor="processing_fee" className="text-black">
                   Processing Fee (%)
                 </Label>
@@ -125,7 +125,7 @@ function CreateLoanProduct({ isOpen, onClose, refetchLoanTypes }) {
                   className="border-black "
                   required
                 />
-              </div>
+              </div> */}
 
               {/* GL Principal Account (Asset) */}
               <div className="space-y-2">
@@ -182,7 +182,7 @@ function CreateLoanProduct({ isOpen, onClose, refetchLoanTypes }) {
               </div>
 
               {/* GL Penalty Account (Revenue) */}
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <Label htmlFor="gl_penalty_revenue" className="text-black">
                   Penalty GL Account (Revenue)
                 </Label>
@@ -206,10 +206,10 @@ function CreateLoanProduct({ isOpen, onClose, refetchLoanTypes }) {
                     ))}
                   </SelectContent>
                 </Select>
-              </div>
+              </div> */}
 
               {/* GL Processing Fee Account (Revenue) */}
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <Label htmlFor="gl_processing_fee_revenue" className="text-black">
                   Processing Fee GL Account (Revenue)
                 </Label>
@@ -233,7 +233,7 @@ function CreateLoanProduct({ isOpen, onClose, refetchLoanTypes }) {
                     ))}
                   </SelectContent>
                 </Select>
-              </div>
+              </div> */}
 
               <DialogFooter>
                 <Button

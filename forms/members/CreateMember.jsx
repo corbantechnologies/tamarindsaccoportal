@@ -34,13 +34,15 @@ function CreateMember({ closeModal, openModal }) {
         <Formik
           initialValues={{
             first_name: "",
+            middle_name: "",
             last_name: "",
             email: "",
-            employer: "", // a select field with options: Tamarind Management Limited, and others. If Tamarind Management Limited, payroll_no is a must
-            payroll_no: '', // optional
-            phone: "",
+            employer: "", // a select field with options: Tamarind Management Limited, and others. If Tamarind Management Limited, payroll_no and employment_type are a must
+            employment_type: "", // a select field with options: Permanent, Contract, Temporary, Intern, Other
+            payroll_no: '', // required if employer is Tamarind Management Limited and employment_type is Permanent, or Contract, otherwise it is optional
             gender: "",
             member_no: "",
+            password: "",
           }}
           onSubmit={async (values) => {
             try {
@@ -72,7 +74,7 @@ function CreateMember({ closeModal, openModal }) {
                     type="text"
                     name="member_no"
                     id="member_no"
-                    placeholder="e.g. SCS-001"
+                    placeholder="e.g. M0001"
                     className="border-black   rounded text-base py-2"
                   />
                 </div>
@@ -90,6 +92,23 @@ function CreateMember({ closeModal, openModal }) {
                     name="first_name"
                     id="first_name"
                     placeholder="John"
+                    className="border-black   rounded text-base py-2"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="middle_name"
+                    className="text-base text-black font-medium"
+                  >
+                    Middle Name
+                  </Label>
+                  <Field
+                    as={Input}
+                    type="text"
+                    name="middle_name"
+                    id="middle_name"
+                    placeholder="Doe"
                     className="border-black   rounded text-base py-2"
                   />
                 </div>
@@ -150,6 +169,36 @@ function CreateMember({ closeModal, openModal }) {
                 </div>
 
                 {values.employer === "Tamarind Management Limited" && (
+
+                  <>
+                    <div className="space-y-2">
+                      <Label
+                        htmlFor="employment_type"
+                        className="text-base text-black font-medium"
+                      >
+                        Employment Type
+                      </Label>
+                      <Field
+                        as="select"
+                        name="employment_type"
+                        id="employment_type"
+                        className="w-full border border-black rounded px-3 py-2 text-base focus:ring-2   transition-colors"
+                      >
+                        <option value="">Select Employment Type</option>
+                        <option value="Permanent">Permanent</option>
+                        <option value="Contract">Contract</option>
+                        <option value="Casual">Casual</option>
+                        <option value="Intern">Intern</option>
+                        <option value="Self-Employed">Self-Employed</option>
+                        <option value="Not Employed">Not Employed</option>
+                        <option value="Other">Other</option>
+                      </Field>
+                    </div>
+
+                  </>
+                )}
+
+                {values.employer === "Tamarind Management Limited" && (values.employment_type === "Permanent" || values.employment_type === "Contract") && (
                   <div className="space-y-2">
                     <Label
                       htmlFor="payroll_no"
@@ -163,27 +212,11 @@ function CreateMember({ closeModal, openModal }) {
                       name="payroll_no"
                       id="payroll_no"
                       placeholder="e.g. 12345"
-                      className="border-black   rounded text-base py-2"
+                      className="border-black rounded text-base py-2"
                     />
                   </div>
                 )}
 
-                <div className="space-y-2">
-                  <Label
-                    htmlFor="phone"
-                    className="text-base text-black font-medium"
-                  >
-                    Phone
-                  </Label>
-                  <Field
-                    as={Input}
-                    type="text"
-                    name="phone"
-                    id="phone"
-                    placeholder="254700000000"
-                    className="border-black   rounded text-base py-2"
-                  />
-                </div>
 
                 <div className="space-y-2">
                   <Label
@@ -198,9 +231,28 @@ function CreateMember({ closeModal, openModal }) {
                     name="email"
                     id="email"
                     placeholder="jdoe@example.com"
-                    className="border-black   rounded text-base py-2"
+                    className="border-black rounded text-base py-2"
                   />
                 </div>
+                {/* if no email provided, show the password input */}
+                {values.email === "" && (
+                  <div className="space-y-2">
+                    <Label
+                      htmlFor="password"
+                      className="text-base text-black font-medium"
+                    >
+                      Password
+                    </Label>
+                    <Field
+                      as={Input}
+                      type="password"
+                      name="password"
+                      id="password"
+                      placeholder="Enter your password"
+                      className="border-black rounded text-base py-2"
+                    />
+                  </div>
+                )}
               </div>
               <DialogFooter className="flex flex-col sm:flex-row gap-3 mt-6">
                 <Button
