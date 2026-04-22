@@ -108,7 +108,7 @@ export default function SaccoAdminDashboard() {
       </div>
 
       {/* Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="border-l-4 border-l-[#174271]">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-xs font-bold uppercase tracking-wider text-slate-500">
@@ -151,7 +151,7 @@ export default function SaccoAdminDashboard() {
 
       {/* Tabs Content */}
       <Tabs defaultValue="members" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:w-[600px] h-auto bg-white border">
+        <TabsList className="grid w-full grid-cols-3 md:grid-cols-3  h-auto bg-white border">
           <TabsTrigger value="members">Members</TabsTrigger>
           <TabsTrigger value="savings">Saving Types</TabsTrigger>
           <TabsTrigger value="loans">Loan Products</TabsTrigger>
