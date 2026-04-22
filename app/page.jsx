@@ -29,7 +29,13 @@ function LandingPage() {
         <div className="container mx-auto px-4 md:px-8 py-3 lg:py-4 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <div className="h-10 w-10 sm:h-12 sm:w-12 bg-[#045e32] rounded-xl flex items-center justify-center shadow-inner shrink-0">
-              <Landmark className="h-6 w-6 sm:h-7 sm:w-7 text-white" />
+              <Image
+                src="/logo.png"
+                alt="Sacco Logo"
+                width={40}
+                height={40}
+                className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
+              />
             </div>
             <div className="flex flex-col">
               <h1 className="text-lg sm:text-xl font-black text-gray-900 tracking-tight leading-none">TAMARIND</h1>
