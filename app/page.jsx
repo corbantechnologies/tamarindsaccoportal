@@ -206,11 +206,11 @@ function LandingPage() {
               <p className="text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-widest">Active Members</p>
             </div>
             <div className="px-4">
-              <p className="text-3xl font-black text-[#045e32] mb-1">KES 1.2B</p>
+              <p className="text-3xl font-black text-[#045e32] mb-1">KES 1.2M</p>
               <p className="text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-widest">Assets Managed</p>
             </div>
             <div className="px-4">
-              <p className="text-3xl font-black text-[#045e32] mb-1">12.5%</p>
+              <p className="text-3xl font-black text-[#045e32] mb-1">13%</p>
               <p className="text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-widest">Avg. Dividends</p>
             </div>
             <div className="px-4">
