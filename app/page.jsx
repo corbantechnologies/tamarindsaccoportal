@@ -424,7 +424,13 @@ function LandingPage() {
             <div className="md:col-span-2 text-center md:text-left">
               <div className="flex items-center justify-center md:justify-start gap-3 mb-6">
                 <div className="h-10 w-10 bg-[#045e32] rounded-xl flex items-center justify-center shadow-inner">
-                  <Landmark className="h-6 w-6 text-white" />
+                  <Image
+                    src="/logo.png"
+                    alt="Sacco Logo"
+                    width={40}
+                    height={40}
+                    className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
+                  />
                 </div>
                 <div className="flex flex-col text-left">
                   <h3 className="text-xl font-black text-white tracking-tight leading-none">TAMARIND</h3>
