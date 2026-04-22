@@ -99,7 +99,7 @@ export default function LoanApplications() {
           </Button>
         </div>
 
-        <LoanProductShowcase />
+        {/* <LoanProductShowcase /> */}
 
         <Card>
           <CardHeader>
