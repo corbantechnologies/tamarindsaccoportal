@@ -146,19 +146,7 @@ export default function SaccoAdminDashboard() {
             </div>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Venture Types
-            </CardTitle>
-            <TrendingUp className="h-4 w-4 text-purple-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {ventureTypes?.length || 0}
-            </div>
-          </CardContent>
-        </Card>
+
       </div>
 
       {/* Tabs Content */}
@@ -167,7 +155,6 @@ export default function SaccoAdminDashboard() {
           <TabsTrigger value="members">Members</TabsTrigger>
           <TabsTrigger value="savings">Saving Types</TabsTrigger>
           <TabsTrigger value="loans">Loan Products</TabsTrigger>
-          <TabsTrigger value="ventures">Venture Types</TabsTrigger>
         </TabsList>
 
         {/* Members Tab */}
