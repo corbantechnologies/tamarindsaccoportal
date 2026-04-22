@@ -94,7 +94,7 @@ export default function MemberFinancialSummary({ summary, memberNo }) {
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="savings" className="w-full">
-          <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 mb-4 h-auto">
+          <TabsList className="grid w-full grid-cols-1 sm:grid-cols-2 mb-4 h-auto">
             <TabsTrigger value="savings" className="flex items-center gap-2">
               <PiggyBank className="h-4 w-4" /> Savings
             </TabsTrigger>
