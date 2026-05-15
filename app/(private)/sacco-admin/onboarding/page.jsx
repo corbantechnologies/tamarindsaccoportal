@@ -17,9 +17,14 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { generateMigrationChecklist } from "@/lib/pdf-generator";
 
 export default function TamarindMigrationHub() {
     const router = useRouter();
+
+    const handleDownloadChecklist = () => {
+        generateMigrationChecklist("Tamarind Sacco");
+    };
 
     const phases = [
         {
