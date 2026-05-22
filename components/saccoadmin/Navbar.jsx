@@ -144,7 +144,7 @@ export default function SaccoAdminNavbar() {
   return (
     <>
       {/* Top Navbar */}
-      <header className="bg-accent text-white sticky top-0 z-50 shadow">
+      <header className="bg-[#cc5500] text-white sticky top-0 z-50 shadow">
         <div className="mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/sacco-admin/dashboard" className="flex items-center gap-2">
             <span className="text-xl md:text-2xl font-bold tracking-tight">
