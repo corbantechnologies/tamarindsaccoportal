@@ -19,7 +19,6 @@ import {
   Wallet,
   Wallet2,
   Briefcase,
-  CheckCircle,
 } from "lucide-react";
 import {
   Breadcrumb,
@@ -31,6 +30,18 @@ import {
 } from "@/components/ui/breadcrumb";
 import UpdateAccount from "@/forms/member/UpdateAccount";
 import ChangePassword from "@/forms/member/ChangePassword";
+
+const InfoField = ({ icon: Icon, label, value }) => (
+  <div className="flex items-start gap-3 p-4 rounded bg-secondary/50 hover:bg-secondary/80 transition-colors">
+    <Icon className="h-5 w-5 text-primary mt-0.5" />
+    <div className="flex-1 min-w-0">
+      <p className="text-sm font-medium text-muted-foreground">{label}</p>
+      <p className="text-base font-semibold text-foreground truncate">
+        {value || "N/A"}
+      </p>
+    </div>
+  </div>
+);
 
 function AccountSettings() {
   const {
@@ -54,18 +65,6 @@ function AccountSettings() {
   const getInitials = (firstName, lastName) => {
     return `${firstName?.charAt(0) || ""}${lastName?.charAt(0) || ""}`.toUpperCase();
   };
-
-  const InfoField = ({ icon: Icon, label, value }) => (
-    <div className="flex items-start gap-3 p-4 rounded bg-secondary/50 hover:bg-secondary/80 transition-colors">
-      <Icon className="h-5 w-5 text-primary mt-0.5" />
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-muted-foreground">{label}</p>
-        <p className="text-base font-semibold text-foreground truncate">
-          {value || "N/A"}
-        </p>
-      </div>
-    </div>
-  );
 
   if (isLoadingMember) return <LoadingSpinner />;
 
