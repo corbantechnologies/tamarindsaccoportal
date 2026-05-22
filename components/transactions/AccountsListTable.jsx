@@ -35,10 +35,8 @@ import { cn } from "@/lib/utils";
 const AccountsListTable = ({ accountsList }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSavingsTypes, setSelectedSavingsTypes] = useState([]);
-  const [selectedVentureTypes, setSelectedVentureTypes] = useState([]);
   const [selectedLoanTypes, setSelectedLoanTypes] = useState([]);
   const [openSavings, setOpenSavings] = useState(false);
-  const [openVentures, setOpenVentures] = useState(false);
   const [openLoans, setOpenLoans] = useState(false);
   const [expandedRows, setExpandedRows] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
@@ -55,13 +53,7 @@ const AccountsListTable = ({ accountsList }) => {
     return Array.from(types).sort();
   }, [data]);
 
-  const allVentureTypes = useMemo(() => {
-    const types = new Set();
-    data.forEach((user) =>
-      user.venture_accounts.forEach(([, type]) => types.add(type))
-    );
-    return Array.from(types).sort();
-  }, [data]);
+
 
   const allLoanTypes = useMemo(() => {
     const types = new Set();
@@ -82,15 +74,7 @@ const AccountsListTable = ({ accountsList }) => {
     return allSavingsTypes.filter((type) => active.has(type));
   }, [data, allSavingsTypes]);
 
-  const activeVentureTypes = useMemo(() => {
-    const active = new Set();
-    data.forEach((user) =>
-      user.venture_accounts.forEach(([_, type, balance]) => {
-        if (parseFloat(balance) !== 0) active.add(type);
-      })
-    );
-    return allVentureTypes.filter((type) => active.has(type));
-  }, [data, allVentureTypes]);
+
 
   const activeLoanTypes = useMemo(() => {
     const active = new Set();
@@ -106,8 +90,7 @@ const AccountsListTable = ({ accountsList }) => {
   const visibleSavingsTypes =
     selectedSavingsTypes.length > 0 ? selectedSavingsTypes : activeSavingsTypes.length > 0 ? activeSavingsTypes : allSavingsTypes;
 
-  const visibleVentureTypes =
-    selectedVentureTypes.length > 0 ? selectedVentureTypes : activeVentureTypes.length > 0 ? activeVentureTypes : allVentureTypes;
+
 
   const visibleLoanTypes =
     selectedLoanTypes.length > 0 ? selectedLoanTypes : activeLoanTypes.length > 0 ? activeLoanTypes : allLoanTypes;
@@ -126,23 +109,16 @@ const AccountsListTable = ({ accountsList }) => {
           selectedSavingsTypes.includes(type)
         );
 
-      const matchesVentures =
-        selectedVentureTypes.length === 0 ||
-        user.venture_accounts.some(([, type]) =>
-          selectedVentureTypes.includes(type)
-        );
-
       const matchesLoans =
         selectedLoanTypes.length === 0 ||
         user.loan_accounts.some(([, type]) => selectedLoanTypes.includes(type));
 
-      return matchesSearch && matchesSavings && matchesVentures && matchesLoans;
+      return matchesSearch && matchesSavings && matchesLoans;
     });
   }, [
     data,
     searchTerm,
     selectedSavingsTypes,
-    selectedVentureTypes,
     selectedLoanTypes,
   ]);
 
@@ -168,7 +144,6 @@ const AccountsListTable = ({ accountsList }) => {
   const clearFilters = () => {
     setSearchTerm("");
     setSelectedSavingsTypes([]);
-    setSelectedVentureTypes([]);
     setSelectedLoanTypes([]);
     setExpandedRows({});
     setCurrentPage(1);
@@ -185,7 +160,7 @@ const AccountsListTable = ({ accountsList }) => {
   // Reset page on filter change
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm, selectedSavingsTypes, selectedVentureTypes, selectedLoanTypes]);
+  }, [searchTerm, selectedSavingsTypes, selectedLoanTypes]);
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
@@ -197,7 +172,6 @@ const AccountsListTable = ({ accountsList }) => {
   const totalColumns =
     2 + // Member No + Name
     visibleSavingsTypes.length * 2 + // Account + Balance per savings type
-    visibleVentureTypes.length * 2 +
     visibleLoanTypes.length * 2 +
     (visibleLoanTypes.length > 0 ? 1 : 0); // Expand column
 
@@ -261,50 +235,7 @@ const AccountsListTable = ({ accountsList }) => {
             </Popover>
           )}
 
-          {allVentureTypes.length > 0 && (
-            <Popover open={openVentures} onOpenChange={setOpenVentures}>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className="w-full sm:w-56 justify-between">
-                  {selectedVentureTypes.length > 0
-                    ? `${selectedVentureTypes.length} selected`
-                    : "All Venture Types"}
-                  <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-56 p-0">
-                <Command>
-                  <CommandInput placeholder="Search ventures..." />
-                  <CommandList>
-                    <CommandEmpty>No types found.</CommandEmpty>
-                    <CommandGroup>
-                      {allVentureTypes.map((type) => (
-                        <CommandItem
-                          key={type}
-                          onSelect={() =>
-                            setSelectedVentureTypes((prev) =>
-                              prev.includes(type)
-                                ? prev.filter((t) => t !== type)
-                                : [...prev, type]
-                            )
-                          }
-                        >
-                          <Check
-                            className={cn(
-                              "mr-2 h-4 w-4",
-                              selectedVentureTypes.includes(type)
-                                ? "opacity-100"
-                                : "opacity-0"
-                            )}
-                          />
-                          {type}
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  </CommandList>
-                </Command>
-              </PopoverContent>
-            </Popover>
-          )}
+
 
           {allLoanTypes.length > 0 && (
             <Popover open={openLoans} onOpenChange={setOpenLoans}>
@@ -374,13 +305,7 @@ const AccountsListTable = ({ accountsList }) => {
                 </React.Fragment>
               ))}
 
-              {/* Ventures */}
-              {visibleVentureTypes.map((type) => (
-                <React.Fragment key={`v-${type}`}>
-                  <TableHead>{type} Account</TableHead>
-                  <TableHead>{type} Balance</TableHead>
-                </React.Fragment>
-              ))}
+
 
               {/* Loans */}
               {visibleLoanTypes.map((type) => (
@@ -423,16 +348,7 @@ const AccountsListTable = ({ accountsList }) => {
                         );
                       })}
 
-                      {/* Ventures */}
-                      {visibleVentureTypes.map((type) => {
-                        const acc = getAccount(user.venture_accounts, type);
-                        return (
-                          <React.Fragment key={`v-${type}`}>
-                            <TableCell>{acc ? acc[0] : ""}</TableCell>
-                            <TableCell>{acc ? formatBalance(acc[2]) : ""}</TableCell>
-                          </React.Fragment>
-                        );
-                      })}
+
 
                       {/* Loans */}
                       {visibleLoanTypes.map((type) => {

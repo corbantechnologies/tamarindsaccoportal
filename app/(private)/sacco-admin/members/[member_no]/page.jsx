@@ -46,13 +46,11 @@ import {
 import { apiActions } from "@/tools/axios";
 import CreateDepositAdmin from "@/forms/savingsdeposits/CreateDepositAdmin";
 import CreateLoanAccountAdmin from "@/forms/loans/CreateLoanAdmin";
-import CreateVentureDeposits from "@/forms/venturedeposits/CreateVentureDeposits";
-import CreateVenturePayment from "@/forms/venturepayments/CreateVenturePayment";
 import CreateFeePayment from "@/forms/feepayments/CreateFeePayment";
 import UpdateMemberRole from "@/forms/members/UpdateMemberRole";
 import { useFetchLoanProducts } from "@/hooks/loanproducts/actions";
-// import { useFetchMemberSummary } from "@/hooks/summary/actions";
-// import MemberFinancialSummary from "@/components/members/dashboard/MemberFinancialSummary";
+import { useFetchMemberSummary } from "@/hooks/summary/actions";
+import MemberFinancialSummary from "@/components/members/dashboard/MemberFinancialSummary";
 import { downloadMemberSummary } from "@/services/membersummary";
 import { Download, Loader2 } from "lucide-react";
 import EmptyState from "@/components/general/EmptyState";
@@ -67,11 +65,11 @@ function MemberDetail() {
   } = useFetchMemberDetail(member_no);
 
 
-  // const {
-  //   isLoading: isLoadingSummary,
-  //   data: summary,
-  //   refetch: refetchSummary,
-  // } = useFetchMemberSummary(member_no);
+  const {
+    isLoading: isLoadingSummary,
+    data: summary,
+    refetch: refetchSummary,
+  } = useFetchMemberSummary(member_no);
 
   const { data: loanProducts } = useFetchLoanProducts();
 
@@ -80,8 +78,6 @@ function MemberDetail() {
   const [isTogglingStatus, setIsTogglingStatus] = useState(false);
   const [depositModal, setDepositModal] = useState(false);
   const [loanModal, setLoanModal] = useState(false);
-  const [ventureDepositModal, setVentureDepositModal] = useState(false);
-  const [venturePaymentModal, setVenturePaymentModal] = useState(false);
   const [feePaymentModal, setFeePaymentModal] = useState(false);
   const [roleModal, setRoleModal] = useState(false);
 
@@ -89,7 +85,6 @@ function MemberDetail() {
   const ITEMS_PER_PAGE = 3;
   const [savingsPage, setSavingsPage] = useState(1);
   const [feesPage, setFeesPage] = useState(1);
-  const [venturesPage, setVenturesPage] = useState(1);
   const [loansPage, setLoansPage] = useState(1);
 
   const paginate = (items, page) => {
@@ -384,9 +379,9 @@ function MemberDetail() {
         </Card>
 
         {/* Financial Summary */}
-        {/* <div className="mt-8">
+        <div className="mt-8">
           <MemberFinancialSummary summary={summary} memberNo={member_no} />
-        </div> */}
+        </div>
 
         {/* Quick Action Cards */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -488,74 +483,6 @@ function MemberDetail() {
             </CardContent>
           </Card>
 
-          {/* Venture Accounts */}
-          {/* <Card className="shadow-md border-l-4 border-l-emerald-500">
-            <CardHeader>
-              <div className="flex justify-between items-center">
-                <CardTitle className="flex items-center gap-2 text-xl">
-                  <Wallet className="h-6 w-6 text-primary" />
-                  Venture Accounts
-                </CardTitle>
-                {member?.is_approved && (
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                        <MoreVertical className="h-4 w-4" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-40 p-2" align="end">
-                      <div className="flex flex-col gap-1">
-                        <Button
-                          onClick={() => setVentureDepositModal(true)}
-                          size="sm"
-                          variant="ghost"
-                          className="justify-start font-normal h-8"
-                        >
-                          Deposit
-                        </Button>
-                        <Button
-                          onClick={() => setVenturePaymentModal(true)}
-                          size="sm"
-                          variant="ghost"
-                          className="justify-start font-normal h-8 text-destructive hover:text-destructive"
-                        >
-                          Pay
-                        </Button>
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                )}
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {member?.venture_accounts?.length > 0 ? (
-                <>
-                  {paginate(member.venture_accounts, venturesPage).map((account) => (
-                    <InfoField
-                      key={account.reference}
-                      icon={Wallet2}
-                      label={`${account.venture_type} - ${account.account_number}`}
-                      value={`${formatBalance(account.balance)} KES`}
-                    />
-                  ))}
-                  <PaginationControls
-                    currentPage={venturesPage}
-                    totalItems={member.venture_accounts.length}
-                    onPageChange={setVenturesPage}
-                  />
-                </>
-              ) : (
-                <div className="py-4">
-                  <EmptyState
-                    title="No Venture Accounts"
-                    message="This member has no active venture accounts."
-                    icon={Wallet}
-                    className="border-0 bg-transparent p-0"
-                  />
-                </div>
-              )}
-            </CardContent>
-          </Card> */}
 
           {/* Loan Accounts */}
           <Card className="shadow-md border-l-4 border-l-rose-500">
@@ -892,19 +819,6 @@ function MemberDetail() {
           member={member}
         />
 
-        <CreateVentureDeposits
-          isOpen={ventureDepositModal}
-          onClose={() => setVentureDepositModal(false)}
-          refetchMember={refetchMember}
-          ventures={member?.venture_accounts}
-        />
-
-        <CreateVenturePayment
-          isOpen={venturePaymentModal}
-          onClose={() => setVenturePaymentModal(false)}
-          refetchMember={refetchMember}
-          ventures={member?.venture_accounts}
-        />
 
         <CreateFeePayment
           isOpen={feePaymentModal}
