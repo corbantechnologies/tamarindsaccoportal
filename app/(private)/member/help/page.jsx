@@ -21,38 +21,52 @@ export default function TamarindMemberHelpCenter() {
     const primaryColor = "#cc5500";
 
     const quickLinks = [
-        { title: "Getting Started", icon: Rocket, desc: "Basics of the Tamarind portal." },
-        { title: "Savings Guide", icon: PiggyBank, desc: "How to manage your deposits." },
-        { title: "Loan Application", icon: HandCoins, desc: "How to apply for credit." },
-        { title: "Statements", icon: FileText, desc: "Download your financial reports." }
+        { title: "Getting Started", icon: Rocket, desc: "New here? Learn the basics of your portal." },
+        { title: "Savings Guide", icon: PiggyBank, desc: "How to manage your deposits and interest." },
+        { title: "Loan Application", icon: HandCoins, desc: "Step-by-step guide to applying for credit." },
+        { title: "Statements", icon: FileText, desc: "How to download your financial reports." }
     ];
 
     const faqs = [
         {
             q: "How do I activate my account?",
-            a: "Follow the link in your Tamarind invitation email to set your password."
+            a: "Once registered by an Admin, you will receive an invitation email. Click the link to set your password. You can then log in using your Member Number."
+        },
+        {
+            q: "How do I apply for a loan?",
+            a: "Navigate to the Loans section, select a product, and enter your amount. If your savings don't fully cover the loan, you'll need to invite other members to guarantee you."
+        },
+        {
+            q: "What is the 'Amendment' status on my loan?",
+            a: "This means the SACCO Admin has reviewed your request and suggested a different amount or term. You can accept these new terms to proceed or cancel the application."
         },
         {
             q: "How long does it take for my payment to reflect?",
-            a: "Payments are typically updated by the end of the day to ensure accurate bank reconciliation."
+            a: "To ensure accurate reconciliation with the SACCO's bank records, payment balances are typically updated by the end of the day. You can check your dashboard in the evening to see your new balance."
+        },
+        {
+            q: "Can I use my savings as collateral?",
+            a: "Yes! Most saving products in Tamarind can be used to self-guarantee your own loan, depending on the SACCO's specific rules."
         }
     ];
 
     return (
         <div className="min-h-screen bg-slate-50/50 p-4 md:p-8 space-y-8 mx-auto">
+            {/* Hero Section */}
             <div className="text-center space-y-4 py-8">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#cc5500]/10 text-[#cc5500] text-xs font-bold uppercase tracking-wider">
                     <HelpCircle className="w-4 h-4" />
-                    Member Support
+                    Support Center
                 </div>
                 <h1 className="text-4xl font-bold tracking-tight text-slate-900">
-                    How can we help?
+                    How can we help you grow?
                 </h1>
                 <p className="text-slate-600 text-lg max-w-2xl mx-auto">
-                    Welcome to the Tamarind SACCO Support Center.
+                    Everything you need to know about managing your savings and loans with Tamarind SACCO.
                 </p>
             </div>
 
+            {/* Quick Link Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {quickLinks.map((link, idx) => (
                     <Card key={idx} className="hover:border-[#cc5500] transition-all hover:shadow-md cursor-pointer group">
@@ -70,10 +84,11 @@ export default function TamarindMemberHelpCenter() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* FAQs Section */}
                 <div className="lg:col-span-2 space-y-6">
-                    <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2 text-[#cc5500]">
-                        <ShieldCheck className="w-6 h-6" />
-                        FAQs
+                    <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                        <ShieldCheck className="w-6 h-6 text-[#cc5500]" />
+                        Frequently Asked Questions
                     </h2>
                     <Card>
                         <CardContent className="pt-6">
@@ -89,6 +104,42 @@ export default function TamarindMemberHelpCenter() {
                                     </AccordionItem>
                                 ))}
                             </Accordion>
+                        </CardContent>
+                    </Card>
+                </div>
+
+                {/* Contact Sidebar */}
+                <div className="space-y-6">
+                    <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                        <MessageCircle className="w-6 h-6 text-[#cc5500]" />
+                        Contact Us
+                    </h2>
+                    <Card className="bg-[#cc5500] text-white border-none shadow-lg">
+                        <CardHeader>
+                            <CardTitle>Still have questions?</CardTitle>
+                            <CardDescription className="text-white/80">
+                                Our support team is here to help you with any issues.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="flex flex-col sm:flex-row items-center gap-4 p-3 bg-white/10 rounded-lg text-center sm:text-left">
+                                <Mail className="w-5 h-5 flex-shrink-0" />
+                                <div className="text-sm">
+                                    <p className="font-bold">Email Support</p>
+                                    <p className="opacity-80 text-xs">info@tamarindsacco.co.ke</p>
+                                </div>
+                            </div>
+                            <div className="flex flex-col sm:flex-row items-center gap-4 p-3 bg-white/10 rounded-lg text-center sm:text-left">
+                                <UserCircle className="w-5 h-5 flex-shrink-0" />
+                                <div className="text-sm">
+                                    <p className="font-bold">Admin Office</p>
+                                    <p className="opacity-80 text-xs">Visit us during business hours</p>
+                                </div>
+                            </div>
+
+                            <Button className="w-full bg-white text-[#cc5500] hover:bg-slate-100 font-bold mt-4">
+                                Open a Support Ticket
+                            </Button>
                         </CardContent>
                     </Card>
                 </div>

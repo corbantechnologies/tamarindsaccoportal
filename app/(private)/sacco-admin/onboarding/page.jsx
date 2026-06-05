@@ -3,23 +3,25 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { 
-    LayoutDashboard, 
-    Users, 
-    HandCoins, 
-    PiggyBank, 
-    ArrowRight, 
-    Download, 
-    BadgePercent, 
     CheckCircle2, 
+    ArrowRight, 
+    Building2, 
+    Wallet, 
+    BadgePercent, 
+    PiggyBank, 
+    HandCoins,
     HelpCircle,
-    ShieldCheck,
-    FileSpreadsheet
+    Download,
+    Users,
+    FileSpreadsheet,
+    ShieldCheck
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
 import { generateMigrationChecklist } from "@/lib/pdf-generator";
 
-export default function TamarindMigrationHub() {
+export default function MigrationHub() {
     const router = useRouter();
 
     const handleDownloadChecklist = () => {
@@ -30,54 +32,85 @@ export default function TamarindMigrationHub() {
         {
             id: "foundation",
             title: "Phase 1: Foundation",
-            description: "Setup GL and Products.",
-            icon: LayoutDashboard,
+            description: "System configuration and financial rules.",
+            icon: Building2,
             steps: [
-                { title: "GL Accounts", icon: LayoutDashboard, href: "/sacco-admin/setup", desc: "Setup your Chart of Accounts." },
-                { title: "Products", icon: HandCoins, href: "/sacco-admin/setup", desc: "Define Tamarind specific rules." },
+                { title: "General Ledger", icon: Building2, href: "/sacco-admin/setup/gl-accounts", desc: "Define your Chart of Accounts." },
+                { title: "Payment Accounts", icon: Wallet, href: "/sacco-admin/setup/payment-accounts", desc: "Link Bank & M-Pesa accounts." },
+                { title: "Fee Types", icon: BadgePercent, href: "/sacco-admin/setup/feetypes", desc: "Registration & service charges." },
+                { title: "Loan Products", icon: HandCoins, href: "/sacco-admin/setup/loan-products", desc: "Lending rules & interest methods." },
+                { title: "Saving Products", icon: PiggyBank, href: "/sacco-admin/setup/saving-types", desc: "Deposit schemes & collateral rules." },
             ]
         },
         {
             id: "data",
             title: "Phase 2: Member Migration",
-            description: "Bringing your member register into Tamarind.",
+            description: "Bringing your member register into the system.",
             icon: Users,
             steps: [
-                { title: "Member Import", icon: Users, href: "/sacco-admin/members", desc: "Invite single members or upload CSV." },
+                { title: "Member Import", icon: Users, href: "/sacco-admin/members", desc: "Invite single members, use the 15-member bulk form, or upload a CSV." },
             ]
         },
         {
             id: "balances",
             title: "Phase 3: Savings & Fees",
-            description: "Migrating opening balances.",
+            description: "Migrating opening savings and unpaid fees.",
             icon: PiggyBank,
             steps: [
-                { title: "Savings Migration", icon: PiggyBank, href: "/sacco-admin/saving-deposits", desc: "Post opening savings." },
+                { title: "Savings Migration", icon: PiggyBank, href: "/sacco-admin/saving-deposits", desc: "Post single deposits, batch forms, or bulk CSV uploads." },
+                { title: "Fee Migration", icon: BadgePercent, href: "/sacco-admin/fee-payments", desc: "Record single fees, batch forms, or bulk CSV uploads." },
+            ]
+        },
+        {
+            id: "loans",
+            title: "Phase 4: Loan Migration",
+            description: "Moving active loans into the system.",
+            icon: HandCoins,
+            steps: [
+                { title: "Bulk Loan Apps", icon: HandCoins, href: "/sacco-admin/loan-applications", desc: "Best for automation and member tracking." },
+                { title: "Legacy Migration", icon: HelpCircle, href: "/sacco-admin/onboarding/existing-loans", desc: "Manual records for non-standard loans." },
+            ]
+        },
+        {
+            id: "reports",
+            title: "Phase 5: Validation",
+            description: "Verifying your migration with reports.",
+            icon: ShieldCheck,
+            steps: [
+                { title: "Sacco Reports", icon: ShieldCheck, href: "/sacco-admin/reports", desc: "Balance Sheets, P&L, and Portfolio summaries." },
+                { title: "Member Audit", icon: Users, href: "/sacco-admin/members", desc: "Verify individual statements and history." },
             ]
         }
     ];
 
     return (
         <div className="min-h-screen bg-gray-50/50 p-4 md:p-8 space-y-8 mx-auto">
+            {/* Header Section */}
             <div className="space-y-2">
                 <div className="flex items-center gap-2 text-[#cc5500] font-semibold text-sm uppercase tracking-wider">
-                    <CheckCircle2 className="w-4 h-4" />
-                    Tamarind Onboarding
+                    <ShieldCheck className="w-4 h-4" />
+                    Admin Onboarding Center
                 </div>
-                <h1 className="text-3xl font-bold tracking-tight text-slate-900">Tamarind SACCO Migration Hub</h1>
+                <h1 className="text-4xl font-bold tracking-tight text-slate-900">
+                    System Migration Hub
+                </h1>
+                <p className="text-slate-600 text-lg max-w-2xl">
+                    Follow this structured path to move your SACCO from manual records or old software to Tamarind.
+                </p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Main Roadmap */}
                 <div className="lg:col-span-2 space-y-8">
                     {phases.map((phase) => (
-                        <Card key={phase.id} className="overflow-hidden border-none shadow-sm">
-                            <CardHeader className="bg-white border-b border-slate-100 py-4">
+                        <Card key={phase.id} className="border-none shadow-sm overflow-hidden bg-white">
+                            <CardHeader className="bg-slate-50/50 border-b pb-4">
                                 <div className="flex items-center gap-3">
-                                    <div className="p-2 rounded-lg bg-slate-100 text-[#cc5500]">
-                                        <phase.icon className="w-5 h-5" />
+                                    <div className="p-2 bg-white rounded-lg shadow-sm">
+                                        <phase.icon className="w-6 h-6 text-[#cc5500]" />
                                     </div>
                                     <div>
-                                        <CardTitle className="text-lg">{phase.title}</CardTitle>
+                                        <CardTitle className="text-xl">{phase.title}</CardTitle>
                                         <CardDescription>{phase.description}</CardDescription>
                                     </div>
                                 </div>
@@ -95,8 +128,9 @@ export default function TamarindMigrationHub() {
                                                     {idx + 1}
                                                 </div>
                                                 <div>
-                                                    <h3 className="font-semibold text-slate-800">
+                                                    <h3 className="font-semibold text-slate-800 flex items-center gap-2">
                                                         {step.title}
+                                                        <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0 hidden sm:inline" />
                                                     </h3>
                                                     <p className="text-sm text-slate-500">{step.desc}</p>
                                                 </div>
@@ -112,18 +146,153 @@ export default function TamarindMigrationHub() {
                     ))}
                 </div>
 
+                {/* Sidebar Resources */}
                 <div className="space-y-6">
                     <Card className="border-[#cc5500]/20 bg-[#cc5500]/5">
                         <CardHeader>
-                            <CardTitle className="text-lg flex items-center gap-2 text-[#cc5500]">
-                                <HelpCircle className="w-5 h-5" />
-                                Support
+                            <CardTitle className="text-lg flex items-center gap-2">
+                                <HelpCircle className="w-5 h-5 text-[#cc5500]" />
+                                Need Help?
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                            <Button className="w-full bg-[#cc5500] hover:bg-[#cc5500]/90 text-white gap-2 font-semibold">
-                                <Download className="w-4 h-4" /> Download Checklist
+                            <p className="text-sm text-slate-600">
+                                Migration can be complex. We recommend cleaning your data in Excel before attempting a bulk upload.
+                            </p>
+                            <Button 
+                                className="w-full bg-[#cc5500] hover:bg-[#cc5500]/90 text-white gap-2 font-semibold"
+                                onClick={handleDownloadChecklist}
+                            >
+                                <Download className="w-4 h-4" /> Download Migration Checklist
                             </Button>
+                        </CardContent>
+                    </Card>
+
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="text-lg">Import Templates</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-2">
+                            <div 
+                                className="flex items-center justify-between p-3 rounded-lg border hover:bg-slate-50 cursor-pointer transition-colors"
+                                onClick={async () => {
+                                    try {
+                                        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/auth/new-members/bulk-create/template/download/`);
+                                        const blob = await response.blob();
+                                        const url = window.URL.createObjectURL(blob);
+                                        const a = document.createElement('a');
+                                        a.href = url;
+                                        a.download = 'member_migration_template.csv';
+                                        document.body.appendChild(a);
+                                        a.click();
+                                        window.URL.revokeObjectURL(url);
+                                    } catch (error) {
+                                        console.error("Failed to download template", error);
+                                    }
+                                }}
+                            >
+                                <div className="flex items-center gap-3">
+                                    <FileSpreadsheet className="w-5 h-5 text-green-600" />
+                                    <span className="text-sm font-medium">Member Register</span>
+                                </div>
+                                <Download className="w-4 h-4 text-slate-400" />
+                            </div>
+                            <div 
+                                className="flex items-center justify-between p-3 rounded-lg border hover:bg-slate-50 cursor-pointer transition-colors"
+                                onClick={async () => {
+                                    try {
+                                        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/savingsdeposits/bulk/template/`);
+                                        const blob = await response.blob();
+                                        const url = window.URL.createObjectURL(blob);
+                                        const a = document.createElement('a');
+                                        a.href = url;
+                                        a.download = 'savings_migration_template.csv';
+                                        document.body.appendChild(a);
+                                        a.click();
+                                        window.URL.revokeObjectURL(url);
+                                    } catch (error) {
+                                        console.error("Failed to download template", error);
+                                    }
+                                }}
+                            >
+                                <div className="flex items-center gap-3">
+                                    <FileSpreadsheet className="w-5 h-5 text-green-600" />
+                                    <span className="text-sm font-medium">Savings Balances</span>
+                                </div>
+                                <Download className="w-4 h-4 text-slate-400" />
+                            </div>
+                            <div 
+                                className="flex items-center justify-between p-3 rounded-lg border hover:bg-slate-50 cursor-pointer transition-colors"
+                                onClick={async () => {
+                                    try {
+                                        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/feepayments/bulk/template/`);
+                                        const blob = await response.blob();
+                                        const url = window.URL.createObjectURL(blob);
+                                        const a = document.createElement('a');
+                                        a.href = url;
+                                        a.download = 'fee_migration_template.csv';
+                                        document.body.appendChild(a);
+                                        a.click();
+                                        window.URL.revokeObjectURL(url);
+                                    } catch (error) {
+                                        console.error("Failed to download template", error);
+                                    }
+                                }}
+                            >
+                                <div className="flex items-center gap-3">
+                                    <FileSpreadsheet className="w-5 h-5 text-green-600" />
+                                    <span className="text-sm font-medium">Fee Payments</span>
+                                </div>
+                                <Download className="w-4 h-4 text-slate-400" />
+                            </div>
+                            <div 
+                                className="flex items-center justify-between p-3 rounded-lg border hover:bg-slate-50 cursor-pointer transition-colors"
+                                onClick={async () => {
+                                    try {
+                                        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/loanapplications/admin/bulk/template/`);
+                                        const blob = await response.blob();
+                                        const url = window.URL.createObjectURL(blob);
+                                        const a = document.createElement('a');
+                                        a.href = url;
+                                        a.download = 'loan_applications_bulk_template.csv';
+                                        document.body.appendChild(a);
+                                        a.click();
+                                        window.URL.revokeObjectURL(url);
+                                    } catch (error) {
+                                        console.error("Failed to download template", error);
+                                    }
+                                }}
+                            >
+                                <div className="flex items-center gap-3">
+                                    <FileSpreadsheet className="w-5 h-5 text-green-600" />
+                                    <span className="text-sm font-medium">Bulk Loan Apps</span>
+                                </div>
+                                <Download className="w-4 h-4 text-slate-400" />
+                            </div>
+                            <div 
+                                className="flex items-center justify-between p-3 rounded-lg border hover:bg-slate-50 cursor-pointer transition-colors"
+                                onClick={async () => {
+                                    try {
+                                        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/existingloans/bulk/template/`);
+                                        const blob = await response.blob();
+                                        const url = window.URL.createObjectURL(blob);
+                                        const a = document.createElement('a');
+                                        a.href = url;
+                                        a.download = 'existing_loans_bulk_template.csv';
+                                        document.body.appendChild(a);
+                                        a.click();
+                                        window.URL.revokeObjectURL(url);
+                                    } catch (error) {
+                                        console.error("Failed to download template", error);
+                                    }
+                                }}
+                            >
+                                <div className="flex items-center gap-3">
+                                    <FileSpreadsheet className="w-5 h-5 text-green-600" />
+                                    <span className="text-sm font-medium">Legacy Loans</span>
+                                </div>
+                                <Download className="w-4 h-4 text-slate-400" />
+                            </div>
                         </CardContent>
                     </Card>
                 </div>

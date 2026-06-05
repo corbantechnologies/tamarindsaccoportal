@@ -26,6 +26,7 @@ import {
   User,
   UsersRound,
   FileUp,
+  FileDown,
 } from "lucide-react";
 
 import {
@@ -108,7 +109,7 @@ export default function SaccoAdminDashboard() {
 
       {/* Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="border-l-4 border-l-[#cc5500]">
+        <Card className="border-l-4 border-l-[#174271]">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-xs font-bold uppercase tracking-wider text-slate-500">
               Total Members
@@ -244,11 +245,27 @@ export default function SaccoAdminDashboard() {
                         // Clean up the URL object
                         window.URL.revokeObjectURL(url);
                       } catch (error) {
-                        console.error("Download failed", error);
+                        // console.error("Download failed", error);
+                        toast.error("Download failed");
                       }
                     }}
                   >
                     <FileUp className="mr-2 h-4 w-4" /> Download CSV Template
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className="justify-start font-normal"
+                    onClick={async () => {
+                      try {
+                        await downloadAccountsListCSV(token);
+                        setPopoverOpen(false);
+                      } catch (error) {
+                        // console.error("Download failed", error);
+                        toast.error("Download failed");
+                      }
+                    }}
+                  >
+                    <FileDown className="mr-2 h-4 w-4" /> Download Accounts List
                   </Button>
                 </div>
               </PopoverContent>
