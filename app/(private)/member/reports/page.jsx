@@ -224,7 +224,7 @@ export default function SaccoAdminReports() {
         </CardContent>
       </Card>
 
-      <SaccoFinancialReports />
+      {/* <SaccoFinancialReports /> */}
     </div>
   );
 }
