@@ -61,6 +61,7 @@ function MemberNavbar() {
               { label: "Reports", href: "/member/reports" },
               { label: "Profile Settings", href: "/member/settings" },
               { label: "Help Center", href: "/member/help" },
+
             ].map((link) => (
               <Link
                 key={link.href}

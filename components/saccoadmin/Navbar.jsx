@@ -47,6 +47,11 @@ const MENU_LINKS = [
   },
 
   {
+    label: "Accounts List",
+    href: "/sacco-admin/transactions",
+  },
+
+  {
     label: "Accounting & Financials",
     href: "/sacco-admin/accounting",
     children: [
@@ -68,6 +73,7 @@ const MENU_LINKS = [
     href: "/sacco-admin/setup",
     children: [
       { label: "Platform Setup", href: "/sacco-admin/setup" },
+
     ],
   },
 
