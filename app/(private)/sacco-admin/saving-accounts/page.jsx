@@ -35,12 +35,12 @@ import BulkSavingDepositUploadCreate from "@/forms/savingsdeposits/BulkSavingDep
 export default function SavingDepositsPage() {
     const router = useRouter();
     const [page, setPage] = useState(1);
-    const {
-        data: savingsData,
-        isLoading,
-        refetch
+    const { 
+        data: savingsData, 
+        isLoading, 
+        refetch 
     } = useFetchSavings({ page });
-
+    
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [selectedAccount, setSelectedAccount] = useState(null);
 
@@ -76,7 +76,7 @@ export default function SavingDepositsPage() {
                 <div className="flex gap-2">
                     <Button
                         onClick={() => setIsCreateModalOpen(true)}
-                        className="bg-accent hover:bg-[#12345a] text-white text-xs font-bold px-6 h-10 shadow-lg shadow-blue-100"
+                        className="bg-[#174271] hover:bg-[#12345a] text-white text-xs font-bold px-6 h-10 shadow-lg shadow-blue-100"
                     >
                         <Plus className="w-4 h-4 mr-1" /> Single Deposit
                     </Button>
@@ -85,15 +85,30 @@ export default function SavingDepositsPage() {
 
             {/* Main Content Tabs */}
             <Tabs defaultValue="list" className="w-full">
-                <TabsList className="bg-white border p-1 h-12 shadow-sm mb-6">
-                    <TabsTrigger value="list" className="px-6 data-[state=active]:bg-slate-50 data-[state=active]:text-[#174271] font-bold text-xs uppercase tracking-wider">
-                        <ListFilter className="w-4 h-4 mr-2" /> All Accounts
+                <TabsList className="bg-white border p-1 shadow-sm mb-6 w-full h-auto rounded-xl grid grid-cols-3 gap-1 overflow-hidden">
+                    <TabsTrigger
+                        value="list"
+                        className="flex items-center justify-center gap-2 px-4 py-3 text-xs sm:text-sm font-medium transition-all rounded-lg data-[state=active]:bg-slate-50 data-[state=active]:text-[#174271] data-[state=active]:shadow-sm"
+                    >
+                        <ListFilter className="w-4 h-4 flex-shrink-0" />
+                        <span className="hidden sm:inline">All Accounts</span>
+                        <span className="sm:hidden">Accounts</span>
                     </TabsTrigger>
-                    <TabsTrigger value="bulk-create" className="px-6 data-[state=active]:bg-slate-50 data-[state=active]:text-[#174271] font-bold text-xs uppercase tracking-wider">
-                        <Plus className="w-4 h-4 mr-2" /> Multi-Form Deposit
+                    <TabsTrigger
+                        value="bulk-create"
+                        className="flex items-center justify-center gap-2 px-4 py-3 text-xs sm:text-sm font-medium transition-all rounded-lg data-[state=active]:bg-slate-50 data-[state=active]:text-[#174271] data-[state=active]:shadow-sm"
+                    >
+                        <Plus className="w-4 h-4 flex-shrink-0" />
+                        <span className="hidden sm:inline">Multi-Form</span>
+                        <span className="sm:hidden">Batch</span>
                     </TabsTrigger>
-                    <TabsTrigger value="bulk-upload" className="px-6 data-[state=active]:bg-slate-50 data-[state=active]:text-[#174271] font-bold text-xs uppercase tracking-wider">
-                        <FileUp className="w-4 h-4 mr-2" /> Bulk CSV Upload
+                    <TabsTrigger
+                        value="bulk-upload"
+                        className="flex items-center justify-center gap-2 px-4 py-3 text-xs sm:text-sm font-medium transition-all rounded-lg data-[state=active]:bg-slate-50 data-[state=active]:text-[#174271] data-[state=active]:shadow-sm"
+                    >
+                        <FileUp className="w-4 h-4 flex-shrink-0" />
+                        <span className="hidden md:inline">CSV Upload</span>
+                        <span className="md:hidden">CSV</span>
                     </TabsTrigger>
                 </TabsList>
 
@@ -199,7 +214,7 @@ export default function SavingDepositsPage() {
                                     </TableBody>
                                 </Table>
                             </div>
-
+                            
                             {/* Pagination */}
                             {totalPages > 1 && (
                                 <div className="flex items-center justify-between px-6 py-4 bg-slate-50/50 border-t">
@@ -261,9 +276,9 @@ export default function SavingDepositsPage() {
                 refetchMember={refetch}
                 // If an account is selected, pass it as the single option or part of options
                 // The form expects an array of accounts
-                accounts={savings}
-            // We might want to pre-select if selectedAccount is set, 
-            // but the formik initial values would need to handle that inside CreateDepositAdmin.
+                accounts={savings} 
+                // We might want to pre-select if selectedAccount is set, 
+                // but the formik initial values would need to handle that inside CreateDepositAdmin.
             />
         </div>
     );

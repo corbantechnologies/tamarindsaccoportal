@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { useFetchMember, useFetchMembers } from "@/hooks/members/actions";
 import { useFetchSavingsTypes } from "@/hooks/savingtypes/actions";
 import { useFetchLoanProducts } from "@/hooks/loanproducts/actions";
-import { useFetchFeeTypes } from "@/hooks/feetypes/actions";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -22,12 +21,13 @@ import {
   CreditCard,
   TrendingUp,
   Plus,
+  Loader2,
   ChevronDown,
   User,
   UsersRound,
   FileUp,
+  FileDown,
 } from "lucide-react";
-
 
 import {
   Popover,
@@ -40,10 +40,11 @@ import BulkMemberCreate from "@/forms/members/BulkMemberCreate";
 import BulkMemberUploadCreate from "@/forms/members/BulkMemberUploadCreate";
 import CreateSavingTypeModal from "@/forms/savingtypes/CreateSavingType";
 import CreateLoanProduct from "@/forms/loanproducts/CreateLoanProduct";
-import CreateFeeTypeModal from "@/forms/feetypes/CreateFeeType";
 import LoadingSpinner from "@/components/general/LoadingSpinner";
 import { downloadBulkMembersTemplate } from "@/services/members";
 import useAxiosAuth from "@/hooks/authentication/useAxiosAuth";
+import { useFetchFeeTypes } from "@/hooks/feetypes/actions";
+import CreateFeeTypeModal from "@/forms/feetypes/CreateFeeType";
 
 export default function SaccoAdminDashboard() {
   const token = useAxiosAuth()
@@ -244,11 +245,27 @@ export default function SaccoAdminDashboard() {
                         // Clean up the URL object
                         window.URL.revokeObjectURL(url);
                       } catch (error) {
-                        console.error("Download failed", error);
+                        // console.error("Download failed", error);
+                        toast.error("Download failed");
                       }
                     }}
                   >
                     <FileUp className="mr-2 h-4 w-4" /> Download CSV Template
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className="justify-start font-normal"
+                    onClick={async () => {
+                      try {
+                        await downloadAccountsListCSV(token);
+                        setPopoverOpen(false);
+                      } catch (error) {
+                        // console.error("Download failed", error);
+                        toast.error("Download failed");
+                      }
+                    }}
+                  >
+                    <FileDown className="mr-2 h-4 w-4" /> Download Accounts List
                   </Button>
                 </div>
               </PopoverContent>
@@ -432,6 +449,7 @@ export default function SaccoAdminDashboard() {
         onClose={() => setCreateLoanProductOpen(false)}
         refetchLoanTypes={refetchLoanProducts}
       />
+
       <CreateFeeTypeModal
         isOpen={createFeeTypeOpen}
         onClose={() => setCreateFeeTypeOpen(false)}

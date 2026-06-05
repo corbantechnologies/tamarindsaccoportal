@@ -54,6 +54,7 @@ import MemberFinancialSummary from "@/components/members/dashboard/MemberFinanci
 import { downloadMemberSummary } from "@/services/membersummary";
 import { Download, Loader2 } from "lucide-react";
 import EmptyState from "@/components/general/EmptyState";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 function MemberDetail() {
   const { member_no } = useParams();
@@ -216,7 +217,7 @@ function MemberDetail() {
       <Icon className="h-5 w-5 text-primary mt-0.5" />
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium text-muted-foreground">{label}</p>
-        <p className="text-base font-semibold text-foreground truncate">
+        <p className="text-base font-semibold text-foreground break-words">
           {value || "N/A"}
         </p>
       </div>
@@ -357,11 +358,10 @@ function MemberDetail() {
                         variant="ghost"
                         onClick={handleToggleActiveStatus}
                         disabled={isTogglingStatus}
-                        className={`justify-start font-normal h-9 w-full flex items-center gap-2 ${
-                          member?.is_active 
-                            ? "text-destructive hover:text-destructive hover:bg-destructive/10" 
-                            : "text-green-600 hover:text-green-700 hover:bg-green-50"
-                        }`}
+                        className={`justify-start font-normal h-9 w-full flex items-center gap-2 ${member?.is_active
+                          ? "text-destructive hover:text-destructive hover:bg-destructive/10"
+                          : "text-green-600 hover:text-green-700 hover:bg-green-50"
+                          }`}
                       >
                         {isTogglingStatus ? (
                           <Loader2 className="h-4 w-4 animate-spin" />
@@ -388,7 +388,7 @@ function MemberDetail() {
           {/* Savings Accounts */}
           <Card className="shadow-md border-l-4 border-l-blue-500">
             <CardHeader>
-              <div className="flex justify-between items-center">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
                 <CardTitle className="flex items-center gap-2 text-xl">
                   <Wallet className="h-6 w-6 text-primary" />
                   Savings Accounts
@@ -397,7 +397,7 @@ function MemberDetail() {
                   <Button
                     onClick={() => setDepositModal(true)}
                     size="sm"
-                    className="h-8 bg-primary hover:bg-primary/90 text-white"
+                    className="h-8 w-full sm:w-auto bg-primary hover:bg-primary/90 text-white"
                   >
                     Deposit
                   </Button>
@@ -437,7 +437,7 @@ function MemberDetail() {
           {/* Fee Accounts */}
           <Card className="shadow-md border-l-4 border-l-amber-500">
             <CardHeader>
-              <div className="flex justify-between items-center">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
                 <CardTitle className="flex items-center gap-2 text-xl">
                   <Shield className="h-6 w-6 text-primary" />
                   Fee Accounts
@@ -446,7 +446,7 @@ function MemberDetail() {
                   <Button
                     onClick={() => setFeePaymentModal(true)}
                     size="sm"
-                    className="h-8 bg-amber-600 hover:bg-amber-700 text-white disabled:bg-slate-300 disabled:text-slate-500"
+                    className="h-8 w-full sm:w-auto bg-amber-600 hover:bg-amber-700 text-white disabled:bg-slate-300 disabled:text-slate-500"
                   >
                     Pay Fee
                   </Button>
@@ -461,7 +461,7 @@ function MemberDetail() {
                       key={account.reference}
                       icon={CreditCard}
                       label={`${account.fee_type} - ${account.account_number}`}
-                      value={`${formatBalance(account.outstanding_balance)} KES | ${formatBalance(account.amount_paid)} KES` }
+                      value={`${formatBalance(account.outstanding_balance)} KES | ${formatBalance(account.amount_paid)} KES`}
                     />
                   ))}
                   <PaginationControls
@@ -483,7 +483,6 @@ function MemberDetail() {
             </CardContent>
           </Card>
 
-
           {/* Loan Accounts */}
           <Card className="shadow-md border-l-4 border-l-rose-500">
             <CardHeader>
@@ -492,15 +491,6 @@ function MemberDetail() {
                   <CreditCard className="h-6 w-6 text-primary" />
                   Loan Accounts
                 </CardTitle>
-                {/* {member?.is_approved && (
-                  <Button
-                    onClick={() => setLoanModal(true)}
-                    size="sm"
-                    className="h-8 bg-primary hover:bg-primary/90 text-white"
-                  >
-                    Create Loan
-                  </Button>
-                )} */}
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -610,7 +600,7 @@ function MemberDetail() {
             {member?.guarantor_profile && (
               <Card className="shadow-md border-l-4 border-l-indigo-500">
                 <CardHeader>
-                  <div className="flex justify-between items-center">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
                     <CardTitle className="flex items-center gap-2 text-2xl">
                       <Shield className="h-6 w-6 text-primary" />
                       Guarantor Profile
@@ -655,25 +645,25 @@ function MemberDetail() {
                       <h4 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3 ml-1">
                         Active Guarantees
                       </h4>
-                      <div className="overflow-x-auto rounded border border-secondary">
-                        <table className="w-full text-sm text-left">
-                          <thead className="bg-secondary/50 text-muted-foreground font-medium">
-                            <tr>
-                              <th className="p-3">Loan Application</th>
-                              <th className="p-3">Amount</th>
-                              <th className="p-3 text-right">Status</th>
-                            </tr>
-                          </thead>
-                          <tbody className="divide-y divide-secondary">
+                      <div className="overflow-x-auto">
+                        <Table className="w-full text-sm text-left">
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Loan Application</TableHead>
+                              <TableHead>Amount</TableHead>
+                              <TableHead>Status</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
                             {member.guarantor_profile.guarantees.map((guarantee, i) => (
-                              <tr key={i} className="hover:bg-secondary/20">
-                                <td className="p-3 font-mono text-xs">
+                              <TableRow key={i} className="hover:bg-secondary/20">
+                                <TableCell className="text-sm">
                                   {guarantee.loan_application}
-                                </td>
-                                <td className="p-3 font-semibold">
+                                </TableCell>
+                                <TableCell className="text-sm">
                                   {formatBalance(guarantee.guaranteed_amount)} KES
-                                </td>
-                                <td className="p-3 text-right">
+                                </TableCell>
+                                <TableCell className="text-sm">
                                   <Badge
                                     variant="outline"
                                     className={
@@ -684,11 +674,11 @@ function MemberDetail() {
                                   >
                                     {guarantee.status}
                                   </Badge>
-                                </td>
-                              </tr>
+                                </TableCell>
+                              </TableRow>
                             ))}
-                          </tbody>
-                        </table>
+                          </TableBody>
+                        </Table>
                       </div>
                     </div>
                   )}
@@ -726,7 +716,7 @@ function MemberDetail() {
 
             <Card className="shadow-md">
               <CardHeader>
-                <div className="flex justify-between items-center">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
                   <CardTitle className="flex items-center gap-2 text-xl">
                     <Settings className="h-5 w-5 text-primary" />
                     Roles & Permissions
@@ -735,7 +725,7 @@ function MemberDetail() {
                     onClick={() => setRoleModal(true)}
                     size="sm"
                     variant="outline"
-                    className="h-8 border-primary text-primary hover:bg-primary/5"
+                    className="h-8 w-full sm:w-auto border-primary text-primary hover:bg-primary/5"
                   >
                     Edit Roles
                   </Button>
@@ -819,7 +809,6 @@ function MemberDetail() {
           member={member}
         />
 
-
         <CreateFeePayment
           isOpen={feePaymentModal}
           onClose={() => setFeePaymentModal(false)}
@@ -827,7 +816,7 @@ function MemberDetail() {
           accounts={member?.fee_accounts}
         />
 
-        <UpdateMemberRole 
+        <UpdateMemberRole
           isOpen={roleModal}
           onClose={() => setRoleModal(false)}
           refetchMember={refetchMember}
