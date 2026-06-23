@@ -64,7 +64,7 @@ function CreateLoanPayment({ isOpen, onClose, refetchLoan, loan_account, maxAmou
               await createLoanRepayment(values, token);
               toast?.success("Repayment logged successfully!");
               onClose();
-              if (refetchLoan) refetchLoan();
+              refetchLoan();
             } catch (error) {
               console.log(error);
               toast?.error("Failed to log repayment!");
