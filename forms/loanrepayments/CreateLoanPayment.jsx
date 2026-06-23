@@ -25,12 +25,9 @@ import { useFetchPaymentAccounts } from "@/hooks/paymentaccounts/actions";
 import toast from "react-hot-toast";
 
 const REPAYMENT_TYPE_CHOICES = [
-  { value: "Regular Repayment", label: "Regular Repayment" },
+  { value: "Regular Repayment", label: "Regular Repayment" }, //initialize so it picks the amount to be paid that month in the schedule
   { value: "Partial Payment", label: "Partial Payment" },
-  { value: "Early Settlement", label: "Early Settlement" },
-  { value: "Penalty Payment", label: "Penalty Payment" },
   { value: "Loan Clearance", label: "Loan Clearance" },
-  { value: "Interest Only", label: "Interest Only" },
 ];
 
 function CreateLoanPayment({ isOpen, onClose, refetchLoan, loan_account, maxAmount, loanData, exactClearanceAmount }) {
@@ -141,7 +138,7 @@ function CreateLoanPayment({ isOpen, onClose, refetchLoan, loan_account, maxAmou
                 {/* Contextual hints per repayment type */}
                 {values.repayment_type === "Loan Clearance" && (
                   <p className="text-[11px] text-amber-600 font-medium">
-                    ⚡ Includes loan balance + all outstanding penalties. Amount is pre-filled from the account estimate — the server will validate the exact figure.
+                    ⚡ Includes loan balance. Amount is pre-filled from the account estimate — the server will validate the exact figure.
                   </p>
                 )}
                 {values.repayment_type === "Early Settlement" && loanData?.total_penalties_owed > 0 && (
