@@ -47,7 +47,6 @@ import {
   Pencil,
 } from "lucide-react";
 import CreateLoanPayment from "@/forms/loanrepayments/CreateLoanPayment";
-import { useFetchLoanPenaltiesByLoanAccountReference } from "@/hooks/loanpenalties/actions";
 import CreateLoanPenalty from "@/forms/loanpenalties/CreateLoanPenalty";
 import UpdateLoanPenalty from "@/forms/loanpenalties/UpdateLoanPenalty";
 
@@ -58,12 +57,6 @@ export default function LoanAccountDetail({ params }) {
     isLoading: isLoanLoading,
     refetch,
   } = useFetchLoanDetail(loan_reference);
-
-  const {
-    data: penalties,
-    isLoading: isPenaltiesLoading,
-    refetch: refetchPenalties,
-  } = useFetchLoanPenaltiesByLoanAccountReference(loan_reference);
 
   const {
     data: payoffQuote,
@@ -78,7 +71,7 @@ export default function LoanAccountDetail({ params }) {
 
   const refetchAll = () => {
     refetch();
-    refetchPenalties();
+    isPayoffRefetching();
   };
 
   if (isLoanLoading) return <LoadingSpinner />;
@@ -333,11 +326,9 @@ export default function LoanAccountDetail({ params }) {
                         <TableHead>Due Date</TableHead>
                         <TableHead>Principal</TableHead>
                         <TableHead>Interest</TableHead>
-                        <TableHead>Fees</TableHead>
                         <TableHead>Total Due</TableHead>
                         <TableHead>Principal Paid</TableHead>
                         <TableHead>Interest Paid</TableHead>
-                        <TableHead>Fees Paid</TableHead>
                         <TableHead>Total Paid</TableHead>
                         <TableHead>Total Uncleared</TableHead>
                         <TableHead>Status</TableHead>
@@ -360,9 +351,6 @@ export default function LoanAccountDetail({ params }) {
                             <TableCell>
                               {formatCurrency(item.interest_due)}
                             </TableCell>
-                            <TableCell>
-                              {formatCurrency(item.fee_due)}
-                            </TableCell>
                             <TableCell className="font-semibold text-primary">
                               {formatCurrency(item.total_due)}
                             </TableCell>
@@ -372,9 +360,7 @@ export default function LoanAccountDetail({ params }) {
                             <TableCell>
                               {formatCurrency(item.interest_paid)}
                             </TableCell>
-                            <TableCell>
-                              {formatCurrency(item.fee_paid)}
-                            </TableCell>
+                            
                             <TableCell>
                               {formatCurrency(item.amount_paid)}
                             </TableCell>
@@ -676,20 +662,6 @@ export default function LoanAccountDetail({ params }) {
               ? parseFloat(payoffQuote.total_payoff_amount) + parseFloat(loan.total_penalties_owed || 0)
               : null
           }
-        />
-
-        <CreateLoanPenalty
-          isOpen={isPenaltyModalOpen}
-          onClose={() => setIsPenaltyModalOpen(false)}
-          refetchLoan={refetchAll}
-          loan_account={loan.account_number}
-        />
-
-        <UpdateLoanPenalty
-          isOpen={isUpdatePenaltyModalOpen}
-          onClose={() => setIsUpdatePenaltyModalOpen(false)}
-          refetchLoan={refetchAll}
-          penalty={selectedPenalty}
         />
       </div>
     </div>
