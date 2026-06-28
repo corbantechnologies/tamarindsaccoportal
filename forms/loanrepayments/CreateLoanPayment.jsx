@@ -63,9 +63,8 @@ function CreateLoanPayment({ isOpen, onClose, refetchLoan, loan_account, maxAmou
           enableReinitialize={true}
           onSubmit={async (values) => {
             const isLoanClearance = values.repayment_type === "Loan Clearance";
-            const isPenaltyPayment = values.repayment_type === "Penalty Payment";
-            // For standard types, cap at outstanding balance; penalty/clearance amounts are validated server-side
-            if (!isLoanClearance && !isPenaltyPayment && values.amount > maxAmount) {
+            // For standard types, cap at outstanding balance; clearance amounts are validated server-side
+            if (!isLoanClearance && values.amount > maxAmount) {
               toast.error(`Amount cannot exceed the remaining balance of ${maxAmount.toLocaleString()}`);
               return;
             }
@@ -159,16 +158,6 @@ function CreateLoanPayment({ isOpen, onClose, refetchLoan, loan_account, maxAmou
                 {values.repayment_type === "Loan Clearance" && (
                   <p className="text-[11px] text-amber-600 font-medium">
                     ⚡ Includes loan balance. Amount is pre-filled from the account estimate — the server will validate the exact figure.
-                  </p>
-                )}
-                {values.repayment_type === "Early Settlement" && loanData?.total_penalties_owed > 0 && (
-                  <p className="text-[11px] text-red-600 font-medium">
-                    ⛔ This loan has outstanding penalties. Use &quot;Loan Clearance&quot; to settle both together.
-                  </p>
-                )}
-                {values.repayment_type === "Penalty Payment" && loanData?.total_penalties_owed > 0 && (
-                  <p className="text-[11px] text-blue-600">
-                    Total penalties outstanding: <span className="font-bold">{parseFloat(loanData.total_penalties_owed).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
                   </p>
                 )}
               </div>
