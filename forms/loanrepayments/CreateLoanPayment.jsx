@@ -46,13 +46,12 @@ function CreateLoanPayment({ isOpen, onClose, refetchLoan, loan_account, maxAmou
           initialValues={{
             loan_account: loan_account || "",
             amount: (() => {
-              if (loanData?.projection_snapshot?.schedule) {
-                const now = new Date();
-                const nextMonthStart = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-                const amt = loanData.projection_snapshot.schedule
-                  .filter(item => !item.is_paid && new Date(item.due_date) < nextMonthStart)
-                  .reduce((sum, item) => sum + (parseFloat(item.total_due) - parseFloat(item.amount_paid || 0)), 0);
-                return amt > 0 ? amt : "";
+              if (loanData?.projection_snapshot?.schedule?.length > 0) {
+                const nextUnpaid = loanData.projection_snapshot.schedule.find(item => !item.is_paid);
+                const targetItem = nextUnpaid || loanData.projection_snapshot.schedule[0];
+                if (targetItem) {
+                  return parseFloat(targetItem.total_due) || "";
+                }
               }
               return "";
             })(),
@@ -113,13 +112,12 @@ function CreateLoanPayment({ isOpen, onClose, refetchLoan, loan_account, maxAmou
                       const fillAmount = exactClearanceAmount ?? parseFloat(loanData?.total_clearance_amount ?? 0);
                       if (fillAmount > 0) setFieldValue("amount", fillAmount);
                     } else if (value === "Regular Repayment") {
-                      if (loanData?.projection_snapshot?.schedule) {
-                        const now = new Date();
-                        const nextMonthStart = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-                        const amt = loanData.projection_snapshot.schedule
-                          .filter(item => !item.is_paid && new Date(item.due_date) < nextMonthStart)
-                          .reduce((sum, item) => sum + (parseFloat(item.total_due) - parseFloat(item.amount_paid || 0)), 0);
-                        if (amt > 0) setFieldValue("amount", amt);
+                      if (loanData?.projection_snapshot?.schedule?.length > 0) {
+                        const nextUnpaid = loanData.projection_snapshot.schedule.find(item => !item.is_paid);
+                        const targetItem = nextUnpaid || loanData.projection_snapshot.schedule[0];
+                        if (targetItem) {
+                          setFieldValue("amount", parseFloat(targetItem.total_due));
+                        }
                       }
                     }
                   }}

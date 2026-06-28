@@ -35,16 +35,11 @@ import {
 } from "@/components/ui/table";
 import {
   AlertCircle,
-  CheckCircle2,
-  FileText,
-  CreditCard,
   History,
   Info,
   Banknote,
   Calendar,
   User,
-  AlertTriangle,
-  Pencil,
 } from "lucide-react";
 import CreateLoanPayment from "@/forms/loanrepayments/CreateLoanPayment";
 
@@ -300,7 +295,6 @@ export default function LoanAccountDetail({ params }) {
                   <Table>
                     <TableHeader>
                       <TableRow className="bg-gray-50/50">
-                        <TableHead>Code</TableHead>
                         <TableHead>Due Date</TableHead>
                         <TableHead>Principal</TableHead>
                         <TableHead>Interest</TableHead>
@@ -317,9 +311,6 @@ export default function LoanAccountDetail({ params }) {
                       {loan.projection_snapshot?.schedule?.length > 0 ? (
                         loan.projection_snapshot.schedule.map((item, i) => (
                           <TableRow key={i}>
-                            <TableCell className="font-medium whitespace-nowrap">
-                              {item.installment_code}
-                            </TableCell>
                             <TableCell className="font-medium whitespace-nowrap">
                               {format(new Date(item.due_date), "MMM dd, yyyy")}
                             </TableCell>
