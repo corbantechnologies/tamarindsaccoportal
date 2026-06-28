@@ -21,30 +21,13 @@ import {
   CreditCard,
   TrendingUp,
   Plus,
-  Loader2,
-  ChevronDown,
-  User,
-  UsersRound,
-  FileUp,
-  FileDown,
 } from "lucide-react";
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import SaccoMembersTable from "@/components/members/SaccoMembersTable";
 import CreateMember from "@/forms/members/CreateMember";
-import BulkMemberCreate from "@/forms/members/BulkMemberCreate";
-import BulkMemberUploadCreate from "@/forms/members/BulkMemberUploadCreate";
-import CreateSavingTypeModal from "@/forms/savingtypes/CreateSavingType";
-import CreateLoanProduct from "@/forms/loanproducts/CreateLoanProduct";
 import LoadingSpinner from "@/components/general/LoadingSpinner";
-import { downloadBulkMembersTemplate } from "@/services/members";
 import useAxiosAuth from "@/hooks/authentication/useAxiosAuth";
 import { useFetchFeeTypes } from "@/hooks/feetypes/actions";
-import CreateFeeTypeModal from "@/forms/feetypes/CreateFeeType";
 
 export default function SaccoAdminDashboard() {
   const token = useAxiosAuth()
@@ -71,12 +54,6 @@ export default function SaccoAdminDashboard() {
   } = useFetchFeeTypes();
 
   const [createMemberOpen, setCreateMemberOpen] = useState(false);
-  const [bulkMemberCreateOpen, setBulkMemberCreateOpen] = useState(false);
-  const [bulkMemberUploadOpen, setBulkMemberUploadOpen] = useState(false);
-  const [memberPopoverOpen, setMemberPopoverOpen] = useState(false);
-  const [createSavingTypeOpen, setCreateSavingTypeOpen] = useState(false);
-  const [createLoanProductOpen, setCreateLoanProductOpen] = useState(false);
-  const [createFeeTypeOpen, setCreateFeeTypeOpen] = useState(false);
 
   if (
     isLoadingMyself ||
@@ -173,103 +150,12 @@ export default function SaccoAdminDashboard() {
         {/* Members Tab */}
         <TabsContent value="members" className="pt-6">
           <div className="flex justify-end mb-4">
-            <Popover open={memberPopoverOpen} onOpenChange={setMemberPopoverOpen}>
-              <PopoverTrigger asChild>
-                <Button className="bg-primary hover:bg-primary/90">
-                  <Plus className="mr-2 h-4 w-4" /> Add Member <ChevronDown className="ml-2 h-4 w-4" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-56 p-2" align="end">
-                <div className="flex flex-col space-y-1">
-                  <Button
-                    variant="ghost"
-                    className="justify-start font-normal"
-                    onClick={() => {
-                      setCreateMemberOpen(true);
-                      setMemberPopoverOpen(false);
-                    }}
-                  >
-                    <User className="mr-2 h-4 w-4" /> Single Member
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className="justify-start font-normal"
-                    onClick={() => {
-                      setBulkMemberCreateOpen(true);
-                      setMemberPopoverOpen(false);
-                    }}
-                  >
-                    <UsersRound className="mr-2 h-4 w-4" /> Bulk Member Form
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className="justify-start font-normal"
-                    onClick={() => {
-                      setBulkMemberUploadOpen(true);
-                      setMemberPopoverOpen(false);
-                    }}
-                  >
-                    <FileUp className="mr-2 h-4 w-4" /> Bulk CSV Upload
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className="justify-start font-normal"
-                    onClick={async () => {
-                      try {
-                        const response = await downloadBulkMembersTemplate(token);
-
-                        // Extract filename from Content-Disposition if available, or default to template.csv
-                        const contentDisposition = response.headers['content-disposition'];
-                        let filename = "bulk_members_template.csv";
-                        if (contentDisposition && contentDisposition.indexOf('attachment') !== -1) {
-                          const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                          const matches = filenameRegex.exec(contentDisposition);
-                          if (matches != null && matches[1]) {
-                            filename = matches[1].replace(/['"]/g, '');
-                          }
-                        }
-
-                        // Create a Blob from the CSV data
-                        const blob = new Blob([response.data], { type: 'text/csv' });
-                        // Create an object URL from the Blob
-                        const url = window.URL.createObjectURL(blob);
-                        // Create a temporary link element
-                        const link = document.createElement('a');
-                        link.href = url;
-                        link.setAttribute('download', filename);
-                        // Append to the body, click, and remove
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-
-                        // Clean up the URL object
-                        window.URL.revokeObjectURL(url);
-                      } catch (error) {
-                        // console.error("Download failed", error);
-                        toast.error("Download failed");
-                      }
-                    }}
-                  >
-                    <FileUp className="mr-2 h-4 w-4" /> Download CSV Template
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className="justify-start font-normal"
-                    onClick={async () => {
-                      try {
-                        await downloadAccountsListCSV(token);
-                        setPopoverOpen(false);
-                      } catch (error) {
-                        // console.error("Download failed", error);
-                        toast.error("Download failed");
-                      }
-                    }}
-                  >
-                    <FileDown className="mr-2 h-4 w-4" /> Download Accounts List
-                  </Button>
-                </div>
-              </PopoverContent>
-            </Popover>
+            <Button
+              className="bg-primary hover:bg-primary/90"
+              onClick={() => setCreateMemberOpen(true)}
+            >
+              <Plus className="mr-2 h-4 w-4" /> Add Member
+            </Button>
           </div>
           <SaccoMembersTable members={members} />
         </TabsContent>
@@ -279,13 +165,7 @@ export default function SaccoAdminDashboard() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Saving Types</CardTitle>
-              <Button
-                size="sm"
-                onClick={() => setCreateSavingTypeOpen(true)}
-                className="bg-green-600 hover:bg-green-700 text-white"
-              >
-                <Plus className="mr-2 h-4 w-4" /> Create Type
-              </Button>
+
             </CardHeader>
             <CardContent className="overflow-x-auto">
               {savingTypes?.length > 0 ? (
@@ -327,13 +207,7 @@ export default function SaccoAdminDashboard() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Loan Products</CardTitle>
-              <Button
-                size="sm"
-                onClick={() => setCreateLoanProductOpen(true)}
-                className="bg-blue-600 hover:bg-blue-700 text-white"
-              >
-                <Plus className="mr-2 h-4 w-4" /> Create Product
-              </Button>
+
             </CardHeader>
             <CardContent className="overflow-x-auto">
               {loanProducts?.length > 0 ? (
@@ -373,13 +247,7 @@ export default function SaccoAdminDashboard() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Fee Types</CardTitle>
-              <Button
-                size="sm"
-                onClick={() => setCreateFeeTypeOpen(true)}
-                className="bg-purple-600 hover:bg-purple-700 text-white"
-              >
-                <Plus className="mr-2 h-4 w-4" /> Create Fee Type
-              </Button>
+
             </CardHeader>
             <CardContent className="overflow-x-auto">
               {feeTypes?.length > 0 ? (
@@ -424,36 +292,6 @@ export default function SaccoAdminDashboard() {
           setCreateMemberOpen(false);
           refetchMembers();
         }}
-      />
-      <BulkMemberCreate
-        openModal={bulkMemberCreateOpen}
-        closeModal={() => {
-          setBulkMemberCreateOpen(false);
-          refetchMembers();
-        }}
-      />
-      <BulkMemberUploadCreate
-        openModal={bulkMemberUploadOpen}
-        closeModal={() => {
-          setBulkMemberUploadOpen(false);
-          refetchMembers();
-        }}
-      />
-      <CreateSavingTypeModal
-        isOpen={createSavingTypeOpen}
-        onClose={() => setCreateSavingTypeOpen(false)}
-        refetchSavingTypes={refetchSavingTypes}
-      />
-      <CreateLoanProduct
-        isOpen={createLoanProductOpen}
-        onClose={() => setCreateLoanProductOpen(false)}
-        refetchLoanTypes={refetchLoanProducts}
-      />
-
-      <CreateFeeTypeModal
-        isOpen={createFeeTypeOpen}
-        onClose={() => setCreateFeeTypeOpen(false)}
-        refetchFeeTypes={refetchFeeTypes}
       />
     </div>
   );
