@@ -318,16 +318,13 @@ export default function AdminLoanApplications() {
                       <TableHeader>
                         <TableRow className="bg-gray-50/50 hover:bg-gray-50/50 block sm:table-row">
                           <TableHead className="hidden sm:table-cell">
-                            Reference
-                          </TableHead>
-                          <TableHead className="hidden sm:table-cell">
                             Applicant
                           </TableHead>
                           <TableHead className="hidden sm:table-cell">
                             Product
                           </TableHead>
                           <TableHead className="hidden sm:table-cell">
-                            Admin Created
+                            Created By
                           </TableHead>
                           <TableHead className="hidden sm:table-cell text-right">
                             Amount
@@ -351,12 +348,17 @@ export default function AdminLoanApplications() {
                           >
                             {/* Mobile View: Flexible Layout */}
                             <TableCell className="sm:hidden w-full block border-none p-0 pb-2">
-                              <div className="flex justify-between items-center mb-2">
-                                <span className="font-mono text-xs text-muted-foreground">
-                                  {app.reference}
-                                </span>
+                              <div className="flex justify-between items-start mb-2 mt-2">
+                                <div>
+                                  <div className="font-medium text-gray-900 text-sm">
+                                    {app.member_name || app.member}
+                                  </div>
+                                  <div className="text-xs text-muted-foreground mt-0.5">
+                                    {app.product}
+                                  </div>
+                                </div>
                                 <Badge
-                                  className={`font-normal scale-90 origin-right ${getStatusColor(
+                                  className={`font-normal ${getStatusColor(
                                     app.status
                                   )}`}
                                   variant="secondary"
@@ -364,11 +366,8 @@ export default function AdminLoanApplications() {
                                   {app.status}
                                 </Badge>
                               </div>
-                              <div className="flex justify-between items-start mb-2">
+                              <div className="flex justify-between items-center mb-3">
                                 <div>
-                                  <div className="font-medium text-gray-900">
-                                    {app.product}
-                                  </div>
                                   {app.admin_created ? (
                                     <Badge
                                       className="font-normal scale-90 origin-right"
@@ -378,22 +377,18 @@ export default function AdminLoanApplications() {
                                     </Badge>
                                   ) : (
                                     <Badge
-                                      className="font-normal scale-90 origin-right"
-                                      variant="secondary"
+                                      className="font-normal scale-90 origin-left border-gray-200 text-gray-600 bg-gray-50"
+                                      variant="outline"
                                     >
                                       Member
                                     </Badge>
                                   )}
-                                  <div className="text-xs text-muted-foreground flex items-center gap-1">
-                                    <User className="h-3 w-3" />
-                                    {app.member_name || app.member}
-                                  </div>
                                 </div>
                                 <div className="font-semibold text-gray-900">
                                   {formatCurrency(app.requested_amount)}
                                 </div>
                               </div>
-                              <div className="flex justify-between items-center pt-2 border-t border-dashed mt-2">
+                              <div className="flex justify-between items-center pt-2 border-t border-dashed">
                                 <span className="text-xs text-muted-foreground">
                                   {format(new Date(app.created_at), "MMM dd, yyyy")}
                                 </span>
@@ -413,9 +408,6 @@ export default function AdminLoanApplications() {
                             </TableCell>
 
                             {/* Desktop View */}
-                            <TableCell className="hidden sm:table-cell font-mono text-sm font-medium text-gray-900">
-                              {app.reference}
-                            </TableCell>
                             <TableCell className="hidden sm:table-cell">
                               <div className="flex flex-col">
                                 <span className="font-medium text-sm">
@@ -435,10 +427,12 @@ export default function AdminLoanApplications() {
                                   Admin
                                 </Badge>
                               ) : (
-                                <span className="text-gray-400 text-sm">Member</span>
+                                <Badge className="bg-gray-50 text-gray-600 border-gray-200 font-normal">
+                                  Member
+                                </Badge>
                               )}
                             </TableCell>
-                            <TableCell className="hidden sm:table-cell font-medium">
+                            <TableCell className="hidden sm:table-cell text-right font-medium">
                               {formatCurrency(app.requested_amount)}
                             </TableCell>
                             <TableCell className="hidden sm:table-cell text-muted-foreground">
