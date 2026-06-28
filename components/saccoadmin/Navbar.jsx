@@ -9,7 +9,7 @@ import React, { useState } from "react";
 const MENU_LINKS = [
   { label: "Dashboard", href: "/sacco-admin/dashboard" },
   { label: "Onboarding", href: "/sacco-admin/onboarding" },
-
+  // Members
   {
     label: "Members",
     href: "/sacco-admin/members",
@@ -17,17 +17,7 @@ const MENU_LINKS = [
       { label: "All Members", href: "/sacco-admin/members" },
     ],
   },
-
-  {
-    label: "Loans",
-    href: "/sacco-admin/loans",
-    children: [
-      { label: "Active Loans", href: "/sacco-admin/loans" },
-      { label: "Loan Applications", href: "/sacco-admin/loan-applications" },
-      { label: "Loan Products", href: "/sacco-admin/setup/loan-products" },
-    ],
-  },
-
+  // Core features
   {
     label: "Savings & Deposits",
     href: "/sacco-admin/saving-deposits",
@@ -45,12 +35,21 @@ const MENU_LINKS = [
       { label: "Fee Types", href: "/sacco-admin/setup/feetypes" },
     ],
   },
-
+  {
+    label: "Loans",
+    href: "/sacco-admin/loans",
+    children: [
+      { label: "Active Loans", href: "/sacco-admin/loans" },
+      { label: "Loan Applications", href: "/sacco-admin/loan-applications" },
+      { label: "Loan Products", href: "/sacco-admin/setup/loan-products" },
+    ],
+  },
+  // Accounts and transactions
   {
     label: "Accounts List & Transactions",
     href: "/sacco-admin/transactions",
   },
-
+  // Accounting and reports
   {
     label: "Accounting & Financials",
     href: "/sacco-admin/accounting",
@@ -67,25 +66,16 @@ const MENU_LINKS = [
     label: "Reports",
     href: "/sacco-admin/reports",
   },
-
+  // System setup
   {
     label: "Setup & Configuration",
     href: "/sacco-admin/setup",
     children: [
       { label: "Platform Setup", href: "/sacco-admin/setup" },
-
+      { label: "System Logs", href: "/sacco-admin/logs" },
     ],
   },
-
-  {
-    label: "Legacy Data",
-    href: "/sacco-admin/onboarding/existing-loans",
-    children: [
-      { label: "Legacy Loans", href: "/sacco-admin/onboarding/existing-loans" },
-      { label: "Legacy Payments", href: "/sacco-admin/onboarding/existing-loan-payments" },
-    ],
-  },
-
+  // Personal
   {
     label: "Personal",
     href: "/sacco-admin/personal",
