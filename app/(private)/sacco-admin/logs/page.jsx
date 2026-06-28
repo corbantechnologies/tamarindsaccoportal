@@ -11,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Loader2, Search } from "lucide-react";
+import { Loader2, Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -24,6 +24,7 @@ export default function AuditLogsPage() {
   const [specificDate, setSpecificDate] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [selectedLog, setSelectedLog] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 50;
 
@@ -185,6 +186,7 @@ export default function AuditLogsPage() {
                   <TableHead className="text-black font-semibold">Module</TableHead>
                   <TableHead className="text-black font-semibold">Description</TableHead>
                   <TableHead className="text-black font-semibold">IP Address</TableHead>
+                  <TableHead className="text-black font-semibold text-right">Details</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -200,11 +202,16 @@ export default function AuditLogsPage() {
                     <TableCell>{log.module}</TableCell>
                     <TableCell>{log.description}</TableCell>
                     <TableCell>{log.ip_address || "N/A"}</TableCell>
+                    <TableCell className="text-right">
+                      <Button variant="outline" size="sm" onClick={() => setSelectedLog(log)}>
+                        View JSON
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
                 {(!paginatedLogs || paginatedLogs.length === 0) && (
                   <TableRow>
-                    <TableCell colSpan={6} className="text-center py-4">No logs found.</TableCell>
+                    <TableCell colSpan={7} className="text-center py-4">No logs found.</TableCell>
                   </TableRow>
                 )}
               </TableBody>
@@ -264,6 +271,57 @@ export default function AuditLogsPage() {
           )}
         </div>
       </div>
+
+      {/* JSON Payload Modal */}
+      {selectedLog && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4" onClick={() => setSelectedLog(null)}>
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-[85vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
+            <div className="p-4 border-b flex items-center justify-between">
+              <h3 className="text-lg font-semibold">Audit Log Details</h3>
+              <Button variant="ghost" size="icon" onClick={() => setSelectedLog(null)}>
+                <X className="h-5 w-5" />
+              </Button>
+            </div>
+            <div className="p-4 overflow-y-auto space-y-6 flex-1">
+              <div className="grid grid-cols-2 gap-4 border-b pb-4">
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold">Action</p>
+                  <p className="font-medium">{selectedLog.action}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold">User</p>
+                  <p className="font-medium">{selectedLog.user_name || "System"} ({selectedLog.user_member_no || "N/A"})</p>
+                </div>
+              </div>
+              
+              <div>
+                <h4 className="text-sm font-semibold text-slate-800 mb-2 border-b pb-1">Request Payload</h4>
+                <div className="bg-slate-900 rounded-md p-4 overflow-x-auto">
+                  <pre className="text-green-400 text-xs font-mono">
+                    {selectedLog.request_payload 
+                      ? JSON.stringify(selectedLog.request_payload, null, 2) 
+                      : "No request payload"}
+                  </pre>
+                </div>
+              </div>
+
+              <div>
+                <h4 className="text-sm font-semibold text-slate-800 mb-2 border-b pb-1">Response Payload</h4>
+                <div className="bg-slate-900 rounded-md p-4 overflow-x-auto">
+                  <pre className="text-blue-400 text-xs font-mono">
+                    {selectedLog.response_payload 
+                      ? JSON.stringify(selectedLog.response_payload, null, 2) 
+                      : "No response payload"}
+                  </pre>
+                </div>
+              </div>
+            </div>
+            <div className="p-4 border-t flex justify-end">
+              <Button onClick={() => setSelectedLog(null)}>Close</Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
