@@ -65,20 +65,18 @@ function AccountSelect({ value, onChange, accounts, disabled }) {
                 <CommandItem
                   key={account.id || account.reference}
                   value={`${account.member_name} ${account.account_number}`}
+                  className="flex justify-between"
                   onSelect={() => {
                     onChange(account.account_number);
                     setOpen(false);
                   }}
                 >
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      value === account.account_number
-                        ? "opacity-100"
-                        : "opacity-0"
-                    )}
-                  />
-                  {account.member_name} - {account.account_number} ({account.account_type})
+                  <span>
+                    {account.member_name} - {account.account_number} ({account.account_type})
+                  </span>
+                  {value === account.account_number && (
+                    <Check className="h-4 w-4 shrink-0" />
+                  )}
                 </CommandItem>
               ))}
             </CommandGroup>

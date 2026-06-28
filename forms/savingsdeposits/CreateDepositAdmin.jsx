@@ -118,20 +118,18 @@ function CreateDepositAdmin({ isOpen, onClose, refetchMember, accounts }) {
                             <CommandItem
                               key={account.id || account.reference}
                               value={`${account.member_name} ${account.account_number}`}
+                              className="flex justify-between"
                               onSelect={() => {
                                 setFieldValue("savings_account", account.account_number);
                                 setAccountOpen(false);
                               }}
                             >
-                              <Check
-                                className={cn(
-                                  "mr-2 h-4 w-4",
-                                  values.savings_account === account.account_number
-                                    ? "opacity-100"
-                                    : "opacity-0"
-                                )}
-                              />
-                              {account.member_name} - {account.account_number} ({account.account_type})
+                              <span>
+                                {account.member_name} - {account.account_number} ({account.account_type})
+                              </span>
+                              {values.savings_account === account.account_number && (
+                                <Check className="h-4 w-4 shrink-0" />
+                              )}
                             </CommandItem>
                           ))}
                         </CommandGroup>
