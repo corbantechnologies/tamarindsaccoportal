@@ -39,7 +39,7 @@ function LoginForm() {
         } else if (session?.user?.is_superuser === true) {
           router.push("/superuser/dashboard");
         } else if (session?.user?.is_system_admin === true) {
-          router.push("/superuser/dashboard");
+          router.push("/sacco-admin/dashboard");
         } else if (session?.user?.is_treasurer === true) {
           router.push("/sacco-admin/dashboard");
         } else if (session?.user?.is_bookkeeper === true) {
