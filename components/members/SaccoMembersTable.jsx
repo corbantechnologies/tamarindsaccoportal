@@ -18,7 +18,7 @@ import { Label } from "../ui/label";
 import { CheckCircle, Clock, Search } from "lucide-react";
 import Link from "next/link";
 
-function SaccoMembersTable({ members }) {
+function SaccoMembersTable({ members, hideManageAction = false }) {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -113,25 +113,33 @@ function SaccoMembersTable({ members }) {
                     <TableHead className="text-black">Member No</TableHead>
                     <TableHead className="text-black">Name</TableHead>
                     <TableHead className="text-black">Status</TableHead>
-                    <TableHead className="text-black">Actions</TableHead>
+                    {!hideManageAction && <TableHead className="text-black">Actions</TableHead>}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {paginatedMembers.map((member) => (
                     <TableRow key={member?.reference}>
                       <TableCell className="font-medium">
-                        <Link
-                          href={`/sacco-admin/members/${member?.member_no}`}
-                        >
-                          {member?.member_no}
-                        </Link>
+                        {hideManageAction ? (
+                          member?.member_no
+                        ) : (
+                          <Link
+                            href={`/sacco-admin/members/${member?.member_no}`}
+                          >
+                            {member?.member_no}
+                          </Link>
+                        )}
                       </TableCell>
                       <TableCell>
-                        <Link
-                          href={`/sacco-admin/members/${member?.member_no}`}
-                        >
-                          {member?.first_name} {member?.last_name}
-                        </Link>
+                        {hideManageAction ? (
+                          `${member?.first_name} ${member?.last_name}`
+                        ) : (
+                          <Link
+                            href={`/sacco-admin/members/${member?.member_no}`}
+                          >
+                            {member?.first_name} {member?.last_name}
+                          </Link>
+                        )}
                       </TableCell>
 
                       <TableCell>
@@ -153,19 +161,21 @@ function SaccoMembersTable({ members }) {
                           {member?.is_approved ? "Approved" : "Pending"}
                         </Badge>
                       </TableCell>
-                      <TableCell>
-                        <Button
-                          size="sm"
-                          onClick={() => {
-                            router.push(
-                              `/sacco-admin/members/${member?.member_no}`
-                            );
-                          }}
-                          className="bg-[#ea1315] hover:bg-[#c71012] text-white"
-                        >
-                          Manage
-                        </Button>
-                      </TableCell>
+                      {!hideManageAction && (
+                        <TableCell>
+                          <Button
+                            size="sm"
+                            onClick={() => {
+                              router.push(
+                                `/sacco-admin/members/${member?.member_no}`
+                              );
+                            }}
+                            className="bg-[#ea1315] hover:bg-[#c71012] text-white"
+                          >
+                            Manage
+                          </Button>
+                        </TableCell>
+                      )}
                     </TableRow>
                   ))}
                 </TableBody>

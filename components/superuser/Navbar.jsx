@@ -7,84 +7,21 @@ import { signOut } from "next-auth/react";
 import React, { useState } from "react";
 
 const MENU_LINKS = [
-  { label: "Dashboard", href: "/sacco-admin/dashboard" },
-  { label: "Onboarding", href: "/sacco-admin/onboarding" },
-  // Members
+  { label: "Dashboard", href: "/superuser/dashboard" },
   {
     label: "Members",
-    href: "/sacco-admin/members",
+    href: "/superuser/members",
     children: [
-      { label: "All Members", href: "/sacco-admin/members" },
-    ],
-  },
-  // Core features
-  {
-    label: "Savings & Deposits",
-    href: "/sacco-admin/saving-deposits",
-    children: [
-      { label: "All Deposits", href: "/sacco-admin/saving-deposits" },
-      { label: "Savings Types", href: "/sacco-admin/setup/saving-types" },
-    ],
-  },
-
-  {
-    label: "Fees",
-    href: "/sacco-admin/fee-payments",
-    children: [
-      { label: "All Payments", href: "/sacco-admin/fee-payments" },
-      { label: "Fee Types", href: "/sacco-admin/setup/feetypes" },
+      { label: "Manage Members", href: "/superuser/members" },
     ],
   },
   {
-    label: "Loans",
-    href: "/sacco-admin/loans",
+    label: "Audit Logs",
+    href: "/superuser/logs",
     children: [
-      { label: "Active Loans", href: "/sacco-admin/loans" },
-      { label: "Loan Applications", href: "/sacco-admin/loan-applications" },
-      { label: "Loan Products", href: "/sacco-admin/setup/loan-products" },
+      { label: "System Logs", href: "/superuser/logs" },
     ],
   },
-  // Accounts and transactions
-  {
-    label: "Accounts List & Transactions",
-    href: "/sacco-admin/transactions",
-  },
-  // Accounting and reports
-  {
-    label: "Accounting & Financials",
-    href: "/sacco-admin/accounting",
-    children: [
-      { label: "Accounting Dashboard", href: "/sacco-admin/accounting" },
-      { label: "GL Accounts", href: "/sacco-admin/setup/gl-accounts" },
-      { label: "Fee Payments", href: "/sacco-admin/fee-payments" },
-      { label: "Payment Accounts", href: "/sacco-admin/setup/payment-accounts" },
-      { label: "Fee Types", href: "/sacco-admin/setup/feetypes" },
-    ],
-  },
-
-  {
-    label: "Reports",
-    href: "/sacco-admin/reports",
-  },
-  // System setup
-  {
-    label: "Setup & Configuration",
-    href: "/sacco-admin/setup",
-    children: [
-      { label: "Platform Setup", href: "/sacco-admin/setup" },
-      { label: "System Logs", href: "/sacco-admin/logs" },
-    ],
-  },
-  // Personal
-  {
-    label: "Personal",
-    href: "/sacco-admin/personal",
-    children: [
-      { label: "Personal Profile", href: "/sacco-admin/personal" },
-      { label: "General Settings", href: "/sacco-admin/settings" },
-      { label: "Guarantor Profile", href: "/sacco-admin/personal/guarantorprofile" },
-    ],
-  }
 ];
 
 const NavItem = ({ link, setIsMenuOpen }) => {
@@ -134,18 +71,18 @@ const NavItem = ({ link, setIsMenuOpen }) => {
   );
 };
 
-export default function SaccoAdminNavbar() {
+export default function SuperuserNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <>
       {/* Top Navbar */}
-      <header className="bg-[#cc5500] text-white sticky top-0 z-50 shadow">
+      <header className="bg-slate-900 text-white sticky top-0 z-50 shadow">
         <div className="mx-auto px-6 py-4 flex justify-between items-center">
-          <Link href="/sacco-admin/dashboard" className="flex items-center gap-2">
+          <Link href="/superuser/dashboard" className="flex items-center gap-2">
             <span className="text-xl md:text-2xl font-bold tracking-tight">
               Tamarind Sacco
-              <span className="text-[10px] font-normal uppercase tracking-[2px] opacity-75 ml-1.5">ADMIN</span>
+              <span className="text-[10px] font-normal uppercase tracking-[2px] opacity-75 ml-1.5 text-red-400">SUPERUSER</span>
             </span>
           </Link>
 
@@ -165,7 +102,7 @@ export default function SaccoAdminNavbar() {
           }`}
       >
         <div className="p-6 border-b flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-[#174271]">Main Menu</h2>
+          <h2 className="text-lg font-semibold text-[#174271]">Superuser Menu</h2>
           <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(false)}>
             <XIcon className="h-5 w-5" />
           </Button>

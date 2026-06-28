@@ -35,7 +35,9 @@ function LoginForm() {
       } else {
         toast?.success("Login successful! Redirecting...");
         if (session?.user?.is_staff === true) {
-          router.push("/sacco-admin/dashboard");
+          router.push("/superuser/dashboard");
+        } else if (session?.user?.is_superuser === true) {
+          router.push("/superuser/dashboard");
         } else if (session?.user?.is_system_admin === true) {
           router.push("/sacco-admin/dashboard");
         } else if (session?.user?.is_treasurer === true) {

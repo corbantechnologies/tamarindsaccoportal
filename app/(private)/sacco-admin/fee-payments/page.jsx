@@ -82,7 +82,7 @@ export default function FeePaymentsManagementPage() {
                 <Card className="border shadow-sm bg-accent text-white rounded-lg">
                     <CardHeader className="p-6">
                         <CardDescription className="text-white/60 uppercase tracking-widest text-[9px]">Total Receivables</CardDescription>
-                        <CardTitle className="text-3xl font-bold">
+                        <CardTitle className="text-3xl font-semibold">
                             {feeAccounts?.reduce((sum, acc) => sum + Number(acc.outstanding_balance || 0), 0).toLocaleString()}
                         </CardTitle>
                     </CardHeader>
@@ -90,7 +90,7 @@ export default function FeePaymentsManagementPage() {
                 <Card className="border shadow-sm bg-white rounded-lg">
                     <CardHeader className="p-6">
                         <CardDescription className="text-slate-400 uppercase tracking-widest text-[9px]">Accounts Outstanding</CardDescription>
-                        <CardTitle className="text-2xl font-bold text-slate-800">
+                        <CardTitle className="text-2xl font-semibold text-slate-800">
                             {feeAccounts?.filter(a => Number(a.outstanding_balance) > 0).length || 0}
                         </CardTitle>
                     </CardHeader>
@@ -98,7 +98,7 @@ export default function FeePaymentsManagementPage() {
                 <Card className="border shadow-sm bg-white rounded-lg">
                     <CardHeader className="p-6">
                         <CardDescription className="text-slate-400 uppercase tracking-widest text-[9px]">Fully Paid</CardDescription>
-                        <CardTitle className="text-2xl font-bold text-emerald-600">
+                        <CardTitle className="text-2xl font-semibold text-emerald-600">
                             {feeAccounts?.filter(a => Number(a.outstanding_balance) === 0).length || 0}
                         </CardTitle>
                     </CardHeader>
@@ -106,7 +106,7 @@ export default function FeePaymentsManagementPage() {
                 <Card className="border shadow-sm bg-white rounded-lg">
                     <CardHeader className="p-6">
                         <CardDescription className="text-slate-400 uppercase tracking-widest text-[9px]">Avg Fee Bal</CardDescription>
-                        <CardTitle className="text-2xl font-bold text-slate-800">
+                        <CardTitle className="text-2xl font-semibold text-slate-800">
                             {feeAccounts?.length ? Math.round(feeAccounts.reduce((sum, acc) => sum + Number(acc.outstanding_balance || 0), 0) / feeAccounts.length).toLocaleString() : 0}
                         </CardTitle>
                     </CardHeader>
@@ -181,7 +181,7 @@ export default function FeePaymentsManagementPage() {
                                                         {Number(acc.outstanding_balance).toLocaleString()}
                                                     </TableCell>
                                                     <TableCell className="text-center">
-                                                        <span className={`px-2 py-1 rounded text-[10px] font-bold tracking-wider ${Number(acc.outstanding_balance) === 0
+                                                        <span className={`px-2 py-1 rounded text-[10px] font-semibold tracking-wider ${Number(acc.outstanding_balance) === 0
                                                             ? "bg-green-50 text-green-700"
                                                             : "bg-rose-50 text-rose-700"
                                                             }`}>
@@ -199,7 +199,7 @@ export default function FeePaymentsManagementPage() {
                                             ))
                                         ) : (
                                             <TableRow>
-                                                <TableCell colSpan={5} className="text-center py-24 text-slate-300 font-bold uppercase tracking-[0.2em] text-sm">
+                                                <TableCell colSpan={5} className="text-center py-24 text-slate-300 font-semibold uppercase tracking-[0.2em] text-sm">
                                                     No fee accounts found
                                                 </TableCell>
                                             </TableRow>

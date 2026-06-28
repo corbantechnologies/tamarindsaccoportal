@@ -10,6 +10,82 @@ import { useFetchSavings } from "@/hooks/savings/actions";
 import { useFetchPaymentAccounts } from "@/hooks/paymentaccounts/actions";
 import React, { useState, useMemo } from "react";
 import toast from "react-hot-toast";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
+function AccountSelect({ value, onChange, accounts, disabled }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          disabled={disabled}
+          className={cn(
+            "w-full justify-between font-normal h-10 text-sm border-slate-200 hover:bg-white focus:ring-1 focus:ring-emerald-600",
+            !value && "text-muted-foreground"
+          )}
+        >
+          {value
+            ? (() => {
+                const selected = accounts?.find(
+                  (a) => a.account_number === value
+                );
+                return selected
+                  ? `${selected.member_name} - ${selected.account_number} (${selected.account_type})`
+                  : "-- Select Member Account --";
+              })()
+            : "-- Select Member Account --"}
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[400px] p-0" align="start">
+        <Command>
+          <CommandInput placeholder="Search name or account..." />
+          <CommandList>
+            <CommandEmpty>No account found.</CommandEmpty>
+            <CommandGroup>
+              {accounts?.map((account) => (
+                <CommandItem
+                  key={account.id || account.reference}
+                  value={`${account.member_name} ${account.account_number}`}
+                  className="flex justify-between"
+                  onSelect={() => {
+                    onChange(account.account_number);
+                    setOpen(false);
+                  }}
+                >
+                  <span>
+                    {account.member_name} - {account.account_number} ({account.account_type})
+                  </span>
+                  {value === account.account_number && (
+                    <Check className="h-4 w-4 shrink-0" />
+                  )}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
+}
 
 // Manual Bulk Entry for Savings Deposits
 function BulkSavingDepositCreate({ onBatchSuccess }) {
@@ -95,19 +171,12 @@ function BulkSavingDepositCreate({ onBatchSuccess }) {
                             <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
                                 <div className="md:col-span-5 space-y-1">
                                     <Label className="text-[10px] uppercase font-bold text-slate-400">Target Savings Account</Label>
-                                    <select
+                                    <AccountSelect
                                         value={dep.savings_account}
-                                        onChange={(e) => handleInputChange(index, "savings_account", e.target.value)}
-                                        className="w-full border border-slate-200 rounded px-3 h-10 text-sm focus:ring-1 focus:ring-emerald-600 outline-none"
+                                        onChange={(val) => handleInputChange(index, "savings_account", val)}
+                                        accounts={savingsAccounts?.results}
                                         disabled={isLoadingSavings}
-                                    >
-                                        <option value="">-- Select Member Account --</option>
-                                        {savingsAccounts?.results?.map(acc => (
-                                            <option key={acc.reference} value={acc.account_number}>
-                                                {acc.member_name} ({acc.account_number}) - {acc.account_type}
-                                            </option>
-                                        ))}
-                                    </select>
+                                    />
                                 </div>
                                 <div className="md:col-span-3 space-y-1">
                                     <Label className="text-[10px] uppercase font-bold text-slate-400">Amount</Label>

@@ -10,6 +10,82 @@ import { useFetchFeeAccounts } from "@/hooks/feeaccounts/actions";
 import { useFetchPaymentAccounts } from "@/hooks/paymentaccounts/actions";
 import React, { useState, useMemo } from "react";
 import toast from "react-hot-toast";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
+function FeeAccountSelect({ value, onChange, accounts, disabled }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          disabled={disabled}
+          className={cn(
+            "w-full justify-between font-normal h-9 text-sm border-slate-200 hover:bg-white focus:ring-1 focus:ring-[#174271] truncate",
+            !value && "text-muted-foreground"
+          )}
+        >
+          {value
+            ? (() => {
+                const selected = accounts?.find(
+                  (a) => a.account_number === value
+                );
+                return selected
+                  ? `${selected.member} - ${selected.fee_type} (${selected.account_number}) • Bal: ${Number(selected.outstanding_balance).toLocaleString()}`
+                  : "Select account...";
+              })()
+            : "Select account..."}
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[450px] p-0" align="start">
+        <Command>
+          <CommandInput placeholder="Search member, type or account..." />
+          <CommandList>
+            <CommandEmpty>No account found.</CommandEmpty>
+            <CommandGroup>
+              {accounts?.map((account) => (
+                <CommandItem
+                  key={account.id || account.reference}
+                  value={`${account.member} ${account.account_number} ${account.fee_type}`}
+                  className="flex justify-between"
+                  onSelect={() => {
+                    onChange(account.account_number);
+                    setOpen(false);
+                  }}
+                >
+                  <span>
+                    {account.member} - {account.fee_type} ({account.account_number}) • Bal: {Number(account.outstanding_balance).toLocaleString()}
+                  </span>
+                  {value === account.account_number && (
+                    <Check className="h-4 w-4 shrink-0" />
+                  )}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
+}
 
 function BulkFeePaymentCreate({ onBatchSuccess }) {
     const [loading, setLoading] = useState(false);
@@ -121,19 +197,12 @@ function BulkFeePaymentCreate({ onBatchSuccess }) {
                             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
                                 <div className="lg:col-span-5 space-y-1.5">
                                     <Label className="text-[11px] font-bold uppercase text-slate-500">Member Fee Account</Label>
-                                    <select
+                                    <FeeAccountSelect
                                         value={pay.fee_account}
-                                        onChange={(e) => handleInputChange(index, "fee_account", e.target.value)}
-                                        className="w-full border border-slate-200 rounded px-3 py-1.5 text-sm transition-colors bg-white h-9 focus:outline-none focus:ring-1 focus:ring-[#174271] truncate"
+                                        onChange={(val) => handleInputChange(index, "fee_account", val)}
+                                        accounts={outstandingFees}
                                         disabled={isLoadingFees}
-                                    >
-                                        <option value="">Select account...</option>
-                                        {outstandingFees?.map(acc => (
-                                            <option key={acc.reference} value={acc.account_number}>
-                                                {acc.member} - {acc.fee_type} ({acc.account_number}) • Bal: {Number(acc.outstanding_balance).toLocaleString()}
-                                            </option>
-                                        ))}
-                                    </select>
+                                    />
                                 </div>
                                 <div className="lg:col-span-3 space-y-1.5">
                                     <Label className="text-[11px] font-bold uppercase text-slate-500">Payment Amount</Label>
