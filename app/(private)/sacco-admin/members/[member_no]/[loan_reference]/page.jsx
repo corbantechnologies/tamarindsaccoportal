@@ -54,14 +54,14 @@ export default function LoanAccountDetail({ params }) {
   const {
     data: payoffQuote,
     isLoading: isPayoffLoading,
-    isRefetching: isPayoffRefetching
+    refetch: refetchPayoff
   } = useFetchLoanPayOffAmount(loan_reference);
 
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
   const refetchAll = () => {
     refetch();
-    isPayoffRefetching();
+    if (typeof refetchPayoff === 'function') refetchPayoff();
   };
 
   if (isLoanLoading) return <LoadingSpinner />;

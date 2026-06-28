@@ -44,15 +44,11 @@ export default function LoansManagementPage() {
     const filteredLoans = useMemo(() => {
         if (!loans) return [];
         return loans.filter(loan => {
-            const memberName = typeof loan.member === 'string' 
-                ? loan.member 
-                : `${loan.member?.first_name || ''} ${loan.member?.last_name || ''}`;
-                
-            const matchesSearch =
-                loan.account_number?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                memberName.toLowerCase().includes(searchTerm.toLowerCase());
+            const searchTarget = `${loan.member_name || ''} ${loan.member || ''} ${loan.account_number || ''}`.toLowerCase();
+            const matchesSearch = searchTarget.includes(searchTerm.toLowerCase());
 
-            const matchesStatus = statusFilter === "all" || loan.application?.status === statusFilter;
+            const currentStatus = loan.status || loan.application_details?.status;
+            const matchesStatus = statusFilter === "all" || currentStatus === statusFilter || loan.application_details?.status === statusFilter;
 
             return matchesSearch && matchesStatus;
         });
@@ -139,7 +135,7 @@ export default function LoansManagementPage() {
                         </div>
                         <div className="flex gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0">
                             <div className="inline-flex bg-slate-100/50 rounded-lg p-1 gap-1 border border-slate-200/50">
-                                {['all', 'Approved', 'Disbursed', 'Pending'].map((status) => (
+                                {['all', 'Active', 'Approved', 'Disbursed', 'Pending'].map((status) => (
                                     <button
                                         key={status}
                                         onClick={() => setStatusFilter(status)}
@@ -202,14 +198,15 @@ export default function LoansManagementPage() {
                                                         {Number(loan.outstanding_balance ?? loan.balance ?? 0).toLocaleString()}
                                                     </TableCell>
                                                     <TableCell className="text-center">
-                                                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider flex items-center justify-center gap-1.5 w-fit mx-auto ring-1 ${loan.application?.status === 'Disbursed'
-                                                            ? "bg-green-50 text-green-700 ring-green-200"
-                                                            : loan.application?.status === 'Approved'
-                                                                ? "bg-blue-50 text-blue-700 ring-blue-200 animate-pulse"
-                                                                : "bg-slate-50 text-slate-500 ring-slate-200"
+                                                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider flex items-center justify-center gap-1.5 w-fit mx-auto ring-1 ${
+                                                            (loan.status === 'Active' || loan.application_details?.status === 'Disbursed')
+                                                                ? "bg-green-50 text-green-700 ring-green-200"
+                                                                : loan.application_details?.status === 'Approved'
+                                                                    ? "bg-blue-50 text-blue-700 ring-blue-200 animate-pulse"
+                                                                    : "bg-slate-50 text-slate-500 ring-slate-200"
                                                             }`}>
-                                                            {loan.application?.status === 'Disbursed' ? <CheckCircle2 className="w-3 h-3" /> : loan.application?.status === 'Approved' ? <Clock className="w-3 h-3" /> : <AlertCircle className="w-3 h-3" />}
-                                                            {loan.application?.status?.toUpperCase() || "PENDING"}
+                                                            {(loan.status === 'Active' || loan.application_details?.status === 'Disbursed') ? <CheckCircle2 className="w-3 h-3" /> : loan.application_details?.status === 'Approved' ? <Clock className="w-3 h-3" /> : <AlertCircle className="w-3 h-3" />}
+                                                            {loan.status === 'Active' ? 'ACTIVE' : loan.application_details?.status?.toUpperCase() || loan.status?.toUpperCase() || "PENDING"}
                                                         </span>
                                                     </TableCell>
                                                     <TableCell className="pr-8 text-right">
