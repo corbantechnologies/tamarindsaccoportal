@@ -4,11 +4,12 @@ import useAxiosAuth from "@/hooks/authentication/useAxiosAuth";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogFooter,
+    DialogDescription,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -40,6 +41,7 @@ function CreateLoanPayment({ isOpen, onClose, refetchLoan, loan_account, maxAmou
       <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Log Loan Repayment</DialogTitle>
+          <DialogDescription className="hidden">Log Loan Repayment</DialogDescription>
         </DialogHeader>
 
         <Formik
@@ -72,7 +74,7 @@ function CreateLoanPayment({ isOpen, onClose, refetchLoan, loan_account, maxAmou
               await createLoanRepayment(values, token);
               toast?.success("Repayment logged successfully!");
               onClose();
-              if (refetchLoan) refetchLoan();
+              if (typeof refetchLoan === "function") refetchLoan();
               window.location.reload();
             } catch (error) {
               console.log(error);

@@ -9,6 +9,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogFooter,
+    DialogDescription,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -34,6 +35,7 @@ function CreateLoanDisbursementModal({ isOpen, onClose, refetch, application }) 
             <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>Disburse Loan: {application?.reference}</DialogTitle>
+                    <DialogDescription className="hidden">Disburse Loan</DialogDescription>
                 </DialogHeader>
 
                 <Formik
@@ -51,7 +53,7 @@ function CreateLoanDisbursementModal({ isOpen, onClose, refetch, application }) 
                             await createLoanDisbursement(values, token);
                             toast.success("Loan disbursed successfully!");
                             onClose();
-                            refetch();
+                            if (typeof refetch === "function") refetch();
                         } catch (error) {
                             console.error("Disbursement failed", error);
                             toast.error("Failed to disburse loan!");

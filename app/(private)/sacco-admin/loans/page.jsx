@@ -44,9 +44,13 @@ export default function LoansManagementPage() {
     const filteredLoans = useMemo(() => {
         if (!loans) return [];
         return loans.filter(loan => {
+            const memberName = typeof loan.member === 'string' 
+                ? loan.member 
+                : `${loan.member?.first_name || ''} ${loan.member?.last_name || ''}`;
+                
             const matchesSearch =
                 loan.account_number?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                (`${loan.member?.first_name} ${loan.member?.last_name}`).toLowerCase().includes(searchTerm.toLowerCase());
+                memberName.toLowerCase().includes(searchTerm.toLowerCase());
 
             const matchesStatus = statusFilter === "all" || loan.application?.status === statusFilter;
 
@@ -180,7 +184,9 @@ export default function LoansManagementPage() {
                                                 <TableRow key={loan.reference} className="hover:bg-slate-50/50 transition-all border-b last:border-0 group h-20">
                                                     <TableCell className="pl-8">
                                                         <div className="flex flex-col">
-                                                            <span className="font-bold text-slate-800 text-sm tracking-tight">{loan.member?.first_name} {loan.member?.last_name}</span>
+                                                            <span className="font-bold text-slate-800 text-sm tracking-tight">
+                                                                {typeof loan.member === 'string' ? loan.member : `${loan.member?.first_name || ''} ${loan.member?.last_name || ''}`}
+                                                            </span>
                                                             <span className="text-[11px] font-semibold text-slate-400 font-mono tracking-tight">{loan.account_number}</span>
                                                         </div>
                                                     </TableCell>
@@ -190,10 +196,10 @@ export default function LoansManagementPage() {
                                                         </span>
                                                     </TableCell>
                                                     <TableCell className="text-center font-bold text-slate-700 font-mono text-sm leading-none">
-                                                        {Number(loan.principal).toLocaleString()}
+                                                        {Number(loan.principal_amount || loan.approved_amount || loan.application?.requested_amount || loan.principal || 0).toLocaleString()}
                                                     </TableCell>
                                                     <TableCell className="text-center font-bold text-[#ea1315] font-mono text-sm leading-none">
-                                                        {Number(loan.balance).toLocaleString()}
+                                                        {Number(loan.outstanding_balance ?? loan.balance ?? 0).toLocaleString()}
                                                     </TableCell>
                                                     <TableCell className="text-center">
                                                         <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider flex items-center justify-center gap-1.5 w-fit mx-auto ring-1 ${loan.application?.status === 'Disbursed'
