@@ -3,50 +3,63 @@
 import React from "react";
 import { useFetchAuditLogs } from "@/hooks/auditlogs/actions";
 import { format } from "date-fns";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Loader2 } from "lucide-react";
 
 export default function AuditLogsPage() {
   const { data: logs, isLoading, error } = useFetchAuditLogs();
 
-  if (isLoading) return <div>Loading audit logs...</div>;
+  if (isLoading) return (
+    <div className="flex justify-center items-center min-h-[50vh]">
+      <Loader2 className="h-8 w-8 animate-spin text-slate-500" />
+    </div>
+  );
   if (error) return <div className="text-red-500">Error loading audit logs.</div>;
 
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-slate-900">System Audit Logs</h1>
-      <div className="bg-white rounded-lg shadow border overflow-hidden">
-        <table className="w-full text-sm text-left text-gray-500">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 border-b">
-            <tr>
-              <th scope="col" className="px-6 py-3">Timestamp</th>
-              <th scope="col" className="px-6 py-3">User</th>
-              <th scope="col" className="px-6 py-3">Action</th>
-              <th scope="col" className="px-6 py-3">Module</th>
-              <th scope="col" className="px-6 py-3">Description</th>
-              <th scope="col" className="px-6 py-3">IP Address</th>
-            </tr>
-          </thead>
-          <tbody>
+      <div className="bg-white rounded-lg shadow border overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="text-black font-semibold">Timestamp</TableHead>
+              <TableHead className="text-black font-semibold">User</TableHead>
+              <TableHead className="text-black font-semibold">Action</TableHead>
+              <TableHead className="text-black font-semibold">Module</TableHead>
+              <TableHead className="text-black font-semibold">Description</TableHead>
+              <TableHead className="text-black font-semibold">IP Address</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {logs?.map((log) => (
-              <tr key={log.id} className="bg-white border-b hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap">
+              <TableRow key={log.id}>
+                <TableCell className="whitespace-nowrap">
                   {format(new Date(log.created_at), "MMM d, yyyy HH:mm:ss")}
-                </td>
-                <td className="px-6 py-4">
+                </TableCell>
+                <TableCell>
                   {log.user_name ? `${log.user_name} (${log.user_member_no})` : "System/Anonymous"}
-                </td>
-                <td className="px-6 py-4 font-medium">{log.action}</td>
-                <td className="px-6 py-4">{log.module}</td>
-                <td className="px-6 py-4">{log.description}</td>
-                <td className="px-6 py-4">{log.ip_address || "N/A"}</td>
-              </tr>
+                </TableCell>
+                <TableCell className="font-medium">{log.action}</TableCell>
+                <TableCell>{log.module}</TableCell>
+                <TableCell>{log.description}</TableCell>
+                <TableCell>{log.ip_address || "N/A"}</TableCell>
+              </TableRow>
             ))}
             {(!logs || logs.length === 0) && (
-              <tr>
-                <td colSpan="6" className="px-6 py-4 text-center">No logs found.</td>
-              </tr>
+              <TableRow>
+                <TableCell colSpan={6} className="text-center py-4">No logs found.</TableCell>
+              </TableRow>
             )}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     </div>
   );
