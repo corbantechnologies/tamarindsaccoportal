@@ -23,9 +23,25 @@ import { Field, Form, Formik } from "formik";
 import { createSavingsDeposit } from "@/services/savingsdeposits";
 import { useFetchPaymentAccounts } from "@/hooks/paymentaccounts/actions";
 import toast from "react-hot-toast";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 function CreateDepositAdmin({ isOpen, onClose, refetchMember, accounts }) {
   const [loading, setLoading] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
   const token = useAxiosAuth();
   const { data: paymentAccounts, isLoading: isLoadingPayment } = useFetchPaymentAccounts();
 
@@ -64,29 +80,65 @@ function CreateDepositAdmin({ isOpen, onClose, refetchMember, accounts }) {
         >
           {({ values, setFieldValue }) => (
             <Form className="space-y-4">
-              <div className="space-y-2">
+              <div className="space-y-2 flex flex-col">
                 <Label htmlFor="savings_account" className="text-black">
                   Member Savings Account
                 </Label>
-                <Select
-                  value={values.savings_account}
-                  onValueChange={(value) => setFieldValue("savings_account", value)}
-                  required
-                >
-                  <SelectTrigger className="border-black w-full">
-                    <SelectValue placeholder="Select account" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {accounts?.map((account) => (
-                      <SelectItem
-                        key={account.id || account.reference}
-                        value={account.account_number}
-                      >
-                        {account.account_number} - {account.account_type}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Popover open={accountOpen} onOpenChange={setAccountOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={accountOpen}
+                      className={cn(
+                        "w-full justify-between border-black font-normal",
+                        !values.savings_account && "text-muted-foreground"
+                      )}
+                    >
+                      {values.savings_account
+                        ? (() => {
+                            const selected = accounts?.find(
+                              (a) => a.account_number === values.savings_account
+                            );
+                            return selected
+                              ? `${selected.member_name} - ${selected.account_number}`
+                              : "Select account";
+                          })()
+                        : "Select account..."}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[375px] p-0" align="start">
+                    <Command>
+                      <CommandInput placeholder="Search name or account..." />
+                      <CommandList>
+                        <CommandEmpty>No account found.</CommandEmpty>
+                        <CommandGroup>
+                          {accounts?.map((account) => (
+                            <CommandItem
+                              key={account.id || account.reference}
+                              value={`${account.member_name} ${account.account_number}`}
+                              onSelect={() => {
+                                setFieldValue("savings_account", account.account_number);
+                                setAccountOpen(false);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  values.savings_account === account.account_number
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                              {account.member_name} - {account.account_number}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
               </div>
 
               <div className="space-y-2">
