@@ -15,6 +15,7 @@ import { Loader2, Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 export default function AuditLogsPage() {
   const { data: logs, isLoading, error } = useFetchAuditLogs();
@@ -76,6 +77,14 @@ export default function AuditLogsPage() {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
+  };
+
+  const getActionColor = (action) => {
+    if (!action) return "bg-gray-100 text-gray-800";
+    if (action.includes("200") || action.includes("201") || action === "LOGIN") return "bg-green-100 text-green-800 border-green-200";
+    if (action.includes("400") || action.includes("401") || action.includes("403") || action.includes("404")) return "bg-amber-100 text-amber-800 border-amber-200";
+    if (action.includes("500") || action.includes("ERROR")) return "bg-red-100 text-red-800 border-red-200";
+    return "bg-blue-100 text-blue-800 border-blue-200";
   };
 
   return (
@@ -179,40 +188,46 @@ export default function AuditLogsPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="text-black font-semibold">Timestamp</TableHead>
-                <TableHead className="text-black font-semibold">User</TableHead>
-                <TableHead className="text-black font-semibold">Action</TableHead>
-                <TableHead className="text-black font-semibold">Module</TableHead>
-                <TableHead className="text-black font-semibold">Description</TableHead>
-                <TableHead className="text-black font-semibold">IP Address</TableHead>
-                <TableHead className="text-black font-semibold text-right">Details</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {paginatedLogs.map((log) => (
-                <TableRow key={log.id}>
-                  <TableCell className="whitespace-nowrap">
-                    {format(new Date(log.created_at), "MMM d, yyyy HH:mm:ss")}
-                  </TableCell>
-                  <TableCell>
-                    {log.user_name ? `${log.user_name} (${log.user_member_no})` : "System/Anonymous"}
-                  </TableCell>
-                  <TableCell className="font-medium">{log.action}</TableCell>
-                  <TableCell>{log.module}</TableCell>
-                  <TableCell>{log.description}</TableCell>
-                  <TableCell>{log.ip_address || "N/A"}</TableCell>
-                  <TableCell className="text-right">
-                    <Button variant="outline" size="sm" onClick={() => setSelectedLog(log)}>
-                      View JSON
-                    </Button>
-                  </TableCell>
+                  <TableHead className="text-black font-semibold">Timestamp</TableHead>
+                  <TableHead className="text-black font-semibold">User</TableHead>
+                  <TableHead className="text-black font-semibold">Action</TableHead>
+                  <TableHead className="text-black font-semibold">Module</TableHead>
+                  <TableHead className="text-black font-semibold">IP Address</TableHead>
+                  <TableHead className="text-black font-semibold text-right">Details</TableHead>
                 </TableRow>
-              ))}
-              {(!paginatedLogs || paginatedLogs.length === 0) && (
-                <TableRow>
-                  <TableCell colSpan={7} className="text-center py-4">No logs found.</TableCell>
-                </TableRow>
-              )}
+              </TableHeader>
+              <TableBody>
+                {paginatedLogs.map((log) => (
+                  <TableRow key={log.id} className="hover:bg-slate-50 transition-colors">
+                    <TableCell className="whitespace-nowrap font-medium text-slate-600 text-sm">
+                      {format(new Date(log.created_at), "MMM d, yyyy HH:mm:ss")}
+                    </TableCell>
+                    <TableCell>
+                      {log.user_name ? `${log.user_name} (${log.user_member_no})` : "System/Anonymous"}
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className={getActionColor(log.action)}>
+                        {log.action}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <span className="bg-slate-100 text-slate-700 px-2 py-1 rounded text-xs font-semibold tracking-wide uppercase">
+                        {log.module}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-slate-500 text-sm font-mono">{log.ip_address || "N/A"}</TableCell>
+                    <TableCell className="text-right">
+                      <Button variant="outline" size="sm" onClick={() => setSelectedLog(log)}>
+                        View Details
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+                {(!paginatedLogs || paginatedLogs.length === 0) && (
+                  <TableRow>
+                    <TableCell colSpan={6} className="text-center py-8 text-slate-500">No logs found.</TableCell>
+                  </TableRow>
+                )}
             </TableBody>
           </Table>
         </div>
@@ -284,12 +299,19 @@ export default function AuditLogsPage() {
               <div className="grid grid-cols-2 gap-4 border-b pb-4">
                 <div>
                   <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold">Action</p>
-                  <p className="font-medium">{selectedLog.action}</p>
+                  <Badge variant="outline" className={`mt-1 ${getActionColor(selectedLog.action)}`}>
+                    {selectedLog.action}
+                  </Badge>
                 </div>
                 <div>
                   <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold">User</p>
-                  <p className="font-medium">{selectedLog.user_name || "System"} ({selectedLog.user_member_no || "N/A"})</p>
+                  <p className="font-medium mt-1">{selectedLog.user_name || "System"} ({selectedLog.user_member_no || "N/A"})</p>
                 </div>
+              </div>
+              
+              <div className="border-b pb-4 bg-slate-50 p-4 rounded-lg border">
+                <p className="text-xs text-slate-500 uppercase tracking-wider font-bold mb-2">Description</p>
+                <p className="text-slate-800 text-sm leading-relaxed">{selectedLog.description || "No description provided."}</p>
               </div>
               
               <div>
