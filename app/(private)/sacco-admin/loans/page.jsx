@@ -185,7 +185,7 @@ export default function LoansManagementPage() {
                                                     <TableCell className="pl-8">
                                                         <div className="flex flex-col">
                                                             <span className="font-bold text-slate-800 text-sm tracking-tight">
-                                                                {typeof loan.member === 'string' ? loan.member : `${loan.member?.first_name || ''} ${loan.member?.last_name || ''}`}
+                                                                {loan.member_name} - {loan.member}
                                                             </span>
                                                             <span className="text-[11px] font-semibold text-slate-400 font-mono tracking-tight">{loan.account_number}</span>
                                                         </div>
