@@ -47,11 +47,12 @@ function CreateLoanPayment({ isOpen, onClose, refetchLoan, loan_account, maxAmou
             loan_account: loan_account || "",
             amount: (() => {
               if (loanData?.projection_snapshot?.schedule) {
-                const nextUnpaid = loanData.projection_snapshot.schedule.find(item => !item.is_paid);
-                if (nextUnpaid) {
-                  const amt = parseFloat(nextUnpaid.total_due) - parseFloat(nextUnpaid.amount_paid || 0);
-                  return amt > 0 ? amt : "";
-                }
+                const now = new Date();
+                const nextMonthStart = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+                const amt = loanData.projection_snapshot.schedule
+                  .filter(item => !item.is_paid && new Date(item.due_date) < nextMonthStart)
+                  .reduce((sum, item) => sum + (parseFloat(item.total_due) - parseFloat(item.amount_paid || 0)), 0);
+                return amt > 0 ? amt : "";
               }
               return "";
             })(),
@@ -114,11 +115,12 @@ function CreateLoanPayment({ isOpen, onClose, refetchLoan, loan_account, maxAmou
                       if (fillAmount > 0) setFieldValue("amount", fillAmount);
                     } else if (value === "Regular Repayment") {
                       if (loanData?.projection_snapshot?.schedule) {
-                        const nextUnpaid = loanData.projection_snapshot.schedule.find(item => !item.is_paid);
-                        if (nextUnpaid) {
-                          const amt = parseFloat(nextUnpaid.total_due) - parseFloat(nextUnpaid.amount_paid || 0);
-                          if (amt > 0) setFieldValue("amount", amt);
-                        }
+                        const now = new Date();
+                        const nextMonthStart = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+                        const amt = loanData.projection_snapshot.schedule
+                          .filter(item => !item.is_paid && new Date(item.due_date) < nextMonthStart)
+                          .reduce((sum, item) => sum + (parseFloat(item.total_due) - parseFloat(item.amount_paid || 0)), 0);
+                        if (amt > 0) setFieldValue("amount", amt);
                       }
                     }
                   }}
