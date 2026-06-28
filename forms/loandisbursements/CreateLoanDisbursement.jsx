@@ -39,7 +39,7 @@ function CreateLoanDisbursementModal({ isOpen, onClose, refetch, application }) 
                 <Formik
                     initialValues={{
                         loan_account: application?.loan_account || "",
-                        amount: application?.requested_amount || 0,
+                        amount: application?.approved_amount || application?.requested_amount || "",
                         disbursement_type: "Principal",
                         payment_method: "",
                         transaction_status: "Completed",
@@ -93,24 +93,6 @@ function CreateLoanDisbursementModal({ isOpen, onClose, refetch, application }) 
                                 />
                             </div>
 
-                            <div className="space-y-2">
-                                <Label htmlFor="disbursement_type" className="text-black">
-                                    Disbursement Type
-                                </Label>
-                                <Select
-                                    value={values.disbursement_type}
-                                    onValueChange={(value) => setFieldValue("disbursement_type", value)}
-                                    required
-                                >
-                                    <SelectTrigger className="border-black w-full">
-                                        <SelectValue placeholder="Select disbursement type" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="Principal">Principal</SelectItem>
-                                        <SelectItem value="Refill">Refill</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
 
                             <div className="space-y-2">
                                 <Label htmlFor="payment_method" className="text-black">
