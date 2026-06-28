@@ -101,7 +101,7 @@ function CreateDepositAdmin({ isOpen, onClose, refetchMember, accounts }) {
                               (a) => a.account_number === values.savings_account
                             );
                             return selected
-                              ? `${selected.member_name} - ${selected.account_number}`
+                              ? `${selected.member_name} - ${selected.account_number} (${selected.account_type})`
                               : "Select account";
                           })()
                         : "Select account..."}
@@ -131,7 +131,7 @@ function CreateDepositAdmin({ isOpen, onClose, refetchMember, accounts }) {
                                     : "opacity-0"
                                 )}
                               />
-                              {account.member_name} - {account.account_number}
+                              {account.member_name} - {account.account_number} ({account.account_type})
                             </CommandItem>
                           ))}
                         </CommandGroup>

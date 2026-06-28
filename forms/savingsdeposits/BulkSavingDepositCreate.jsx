@@ -48,7 +48,7 @@ function AccountSelect({ value, onChange, accounts, disabled }) {
                   (a) => a.account_number === value
                 );
                 return selected
-                  ? `${selected.member_name} - ${selected.account_number}`
+                  ? `${selected.member_name} - ${selected.account_number} (${selected.account_type})`
                   : "-- Select Member Account --";
               })()
             : "-- Select Member Account --"}
