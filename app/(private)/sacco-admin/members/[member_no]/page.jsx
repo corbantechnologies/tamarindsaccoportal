@@ -240,6 +240,11 @@ function MemberDetail() {
 
   if (isLoadingMember) return <LoadingSpinner />;
 
+  const handleRefetchAll = () => {
+    refetchMember();
+    refetchSummary();
+  };
+
   return (
     <div className="min-h-screen bg-background p-4 md:p-6">
       <div className="mx-auto space-y-8">
@@ -797,14 +802,14 @@ function MemberDetail() {
         <CreateDepositAdmin
           isOpen={depositModal}
           onClose={() => setDepositModal(false)}
-          refetchMember={refetchMember}
+          refetchMember={handleRefetchAll}
           accounts={member?.savings}
         />
 
         <CreateLoanAccountAdmin
           isOpen={loanModal}
           onClose={() => setLoanModal(false)}
-          refetchMember={refetchMember}
+          refetchMember={handleRefetchAll}
           loanProducts={loanProducts}
           member={member}
         />
@@ -812,14 +817,14 @@ function MemberDetail() {
         <CreateFeePayment
           isOpen={feePaymentModal}
           onClose={() => setFeePaymentModal(false)}
-          refetchMember={refetchMember}
+          refetchMember={handleRefetchAll}
           accounts={member?.fee_accounts}
         />
 
         <UpdateMemberRole
           isOpen={roleModal}
           onClose={() => setRoleModal(false)}
-          refetchMember={refetchMember}
+          refetchMember={handleRefetchAll}
           member={member}
         />
       </div>

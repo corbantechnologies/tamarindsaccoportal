@@ -100,6 +100,7 @@ function BulkSavingDepositCreate({ onBatchSuccess }) {
     const emptyDeposit = {
         savings_account: "", // reference
         amount: "",
+        transaction_date: new Date().toISOString().split('T')[0],
         payment_method: "", // payment account name
     };
 
@@ -128,7 +129,7 @@ function BulkSavingDepositCreate({ onBatchSuccess }) {
 
             const invalidRow = deposits.find(d => !d.savings_account || !d.amount || !d.payment_method);
             if (invalidRow) {
-                toast.error("Please fill all fields in each row.");
+                toast.error("Please fill all required fields in each row.");
                 setLoading(false);
                 return;
             }
@@ -169,7 +170,7 @@ function BulkSavingDepositCreate({ onBatchSuccess }) {
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-                                <div className="md:col-span-5 space-y-1">
+                                <div className="md:col-span-4 space-y-1">
                                     <Label className="text-[10px] uppercase font-bold text-slate-400">Target Savings Account</Label>
                                     <AccountSelect
                                         value={dep.savings_account}
@@ -178,7 +179,7 @@ function BulkSavingDepositCreate({ onBatchSuccess }) {
                                         disabled={isLoadingSavings}
                                     />
                                 </div>
-                                <div className="md:col-span-3 space-y-1">
+                                <div className="md:col-span-2 space-y-1">
                                     <Label className="text-[10px] uppercase font-bold text-slate-400">Amount</Label>
                                     <Input
                                         type="number"
@@ -188,7 +189,16 @@ function BulkSavingDepositCreate({ onBatchSuccess }) {
                                         className="h-10 text-sm font-bold border-slate-200 focus:border-emerald-600"
                                     />
                                 </div>
-                                <div className="md:col-span-4 space-y-1">
+                                <div className="md:col-span-3 space-y-1">
+                                    <Label className="text-[10px] uppercase font-bold text-slate-400">Transaction Date</Label>
+                                    <Input
+                                        type="date"
+                                        value={dep.transaction_date}
+                                        onChange={(e) => handleInputChange(index, "transaction_date", e.target.value)}
+                                        className="h-10 text-sm font-bold border-slate-200 focus:border-emerald-600"
+                                    />
+                                </div>
+                                <div className="md:col-span-3 space-y-1">
                                     <Label className="text-[10px] uppercase font-bold text-slate-400">Payment Account</Label>
                                     <select
                                         value={dep.payment_method}
