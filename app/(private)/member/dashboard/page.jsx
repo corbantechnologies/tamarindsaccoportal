@@ -18,6 +18,8 @@ import { useFetchMemberSummary } from "@/hooks/summary/actions";
 import MemberFinancialSummary from "@/components/members/dashboard/MemberFinancialSummary";
 
 function MemberDashboard() {
+  const [summaryYear, setSummaryYear] = React.useState(new Date().getFullYear());
+
   const {
     isLoading: isLoadingMember,
     data: member,
@@ -28,7 +30,7 @@ function MemberDashboard() {
     isLoading: isLoadingSummary,
     data: summary,
     refetch: refetchSummary,
-  } = useFetchMemberSummary(member?.member_no);
+  } = useFetchMemberSummary(member?.member_no, summaryYear);
 
 
   if (isLoadingMember || isLoadingSummary) return <MemberLoadingSpinner />;
@@ -198,6 +200,8 @@ function MemberDashboard() {
         <MemberFinancialSummary
           summary={summary}
           memberNo={member?.member_no}
+          summaryYear={summaryYear}
+          setSummaryYear={setSummaryYear}
         />
       </div>
     </div>
