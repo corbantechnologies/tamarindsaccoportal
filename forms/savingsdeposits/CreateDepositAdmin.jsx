@@ -47,7 +47,7 @@ function CreateDepositAdmin({ isOpen, onClose, refetchMember, accounts }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="">
             Create New Savings Deposit
@@ -62,6 +62,7 @@ function CreateDepositAdmin({ isOpen, onClose, refetchMember, accounts }) {
             payment_method: "",
             deposit_type: "",
             transaction_status: "Completed",
+            transaction_date: "",
             is_active: true,
           }}
           onSubmit={async (values) => {
@@ -100,15 +101,19 @@ function CreateDepositAdmin({ isOpen, onClose, refetchMember, accounts }) {
                             const selected = accounts?.find(
                               (a) => a.account_number === values.savings_account
                             );
-                            return selected
-                              ? `${selected.member_name} - ${selected.account_number} (${selected.account_type})`
-                              : "Select account";
+                            return selected ? (
+                              <span className="truncate">
+                                {selected.member_name} - {selected.account_number} ({selected.account_type})
+                              </span>
+                            ) : (
+                              "Select account"
+                            );
                           })()
                         : "Select account..."}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-[375px] p-0" align="start">
+                  <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
                     <Command>
                       <CommandInput placeholder="Search name or account..." />
                       <CommandList>
@@ -153,6 +158,21 @@ function CreateDepositAdmin({ isOpen, onClose, refetchMember, accounts }) {
                   required
                   min="0.01"
                   step="0.01"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="transaction_date" className="text-black">
+                  Transaction Date
+                </Label>
+                <Field
+                  as={Input}
+                  type="date"
+                  id="transaction_date"
+                  name="transaction_date"
+                  className="border-black "
+                  placeholder="Enter transaction date"
+                  required
                 />
               </div>
 

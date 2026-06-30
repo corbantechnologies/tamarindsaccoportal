@@ -57,6 +57,7 @@ function CreateLoanPayment({ isOpen, onClose, refetchLoan, loan_account, maxAmou
               }
               return "";
             })(),
+            transaction_date: new Date().toISOString().split('T')[0],
             payment_method: "",
             repayment_type: "Regular Repayment",
             transaction_status: "Completed",
@@ -160,6 +161,20 @@ function CreateLoanPayment({ isOpen, onClose, refetchLoan, loan_account, maxAmou
                     ⚡ Includes loan balance. Amount is pre-filled from the account estimate — the server will validate the exact figure.
                   </p>
                 )}
+              </div>
+
+              <div className="space-y-1">
+                <Label htmlFor="transaction_date" className="text-black">
+                  Transaction Date
+                </Label>
+                <Field
+                  as={Input}
+                  type="date"
+                  id="transaction_date"
+                  name="transaction_date"
+                  className="border-black"
+                  required
+                />
               </div>
 
               <div className="space-y-2">

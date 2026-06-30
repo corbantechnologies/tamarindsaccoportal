@@ -59,6 +59,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 function MemberDetail() {
   const { member_no } = useParams();
   const token = useAxiosAuth();
+  const [summaryYear, setSummaryYear] = useState(new Date().getFullYear());
   const {
     isLoading: isLoadingMember,
     data: member,
@@ -70,7 +71,7 @@ function MemberDetail() {
     isLoading: isLoadingSummary,
     data: summary,
     refetch: refetchSummary,
-  } = useFetchMemberSummary(member_no);
+  } = useFetchMemberSummary(member_no, summaryYear);
 
   const { data: loanProducts } = useFetchLoanProducts();
 
@@ -150,13 +151,13 @@ function MemberDetail() {
     if (!member_no) return;
     setIsDownloading(true);
     try {
-      const blob = await downloadMemberSummary(member_no, token);
+      const blob = await downloadMemberSummary(member_no, summaryYear, token);
       const url = window.URL.createObjectURL(new Blob([blob]));
       const link = document.createElement("a");
       link.href = url;
       link.setAttribute(
         "download",
-        `Financial_Summary_${new Date().getFullYear()}.pdf`
+        `Financial_Summary_${summaryYear}.pdf`
       );
       document.body.appendChild(link);
       link.click();
@@ -239,6 +240,10 @@ function MemberDetail() {
   if (member?.is_bookkeeper) activeRoles.push("Bookkeeper");
 
   if (isLoadingMember) return <LoadingSpinner />;
+
+  const handleRefetchAll = () => {
+    window.location.reload();
+  };
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-6">
@@ -380,7 +385,12 @@ function MemberDetail() {
 
         {/* Financial Summary */}
         <div className="mt-8">
-          <MemberFinancialSummary summary={summary} memberNo={member_no} />
+          <MemberFinancialSummary 
+            summary={summary} 
+            memberNo={member_no} 
+            summaryYear={summaryYear}
+            setSummaryYear={setSummaryYear}
+          />
         </div>
 
         {/* Quick Action Cards */}
@@ -797,14 +807,14 @@ function MemberDetail() {
         <CreateDepositAdmin
           isOpen={depositModal}
           onClose={() => setDepositModal(false)}
-          refetchMember={refetchMember}
+          refetchMember={handleRefetchAll}
           accounts={member?.savings}
         />
 
         <CreateLoanAccountAdmin
           isOpen={loanModal}
           onClose={() => setLoanModal(false)}
-          refetchMember={refetchMember}
+          refetchMember={handleRefetchAll}
           loanProducts={loanProducts}
           member={member}
         />
@@ -812,14 +822,14 @@ function MemberDetail() {
         <CreateFeePayment
           isOpen={feePaymentModal}
           onClose={() => setFeePaymentModal(false)}
-          refetchMember={refetchMember}
+          refetchMember={handleRefetchAll}
           accounts={member?.fee_accounts}
         />
 
         <UpdateMemberRole
           isOpen={roleModal}
           onClose={() => setRoleModal(false)}
-          refetchMember={refetchMember}
+          refetchMember={handleRefetchAll}
           member={member}
         />
       </div>

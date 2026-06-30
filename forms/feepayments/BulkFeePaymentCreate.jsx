@@ -102,6 +102,7 @@ function BulkFeePaymentCreate({ onBatchSuccess }) {
     const emptyPayment = {
         fee_account: "", 
         amount: "",
+        transaction_date: new Date().toISOString().split('T')[0],
         payment_method: "", 
         transaction_status: "Completed",
     };
@@ -140,7 +141,7 @@ function BulkFeePaymentCreate({ onBatchSuccess }) {
 
             const invalidRow = payments.find(p => !p.fee_account || !p.amount || !p.payment_method);
             if (invalidRow) {
-                toast.error("Please fill all fields in each row.");
+                toast.error("Please fill all required fields in each row.");
                 setLoading(false);
                 return;
             }
@@ -195,7 +196,7 @@ function BulkFeePaymentCreate({ onBatchSuccess }) {
                             </div>
 
                             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-                                <div className="lg:col-span-5 space-y-1.5">
+                                <div className="lg:col-span-4 space-y-1.5">
                                     <Label className="text-[11px] font-bold uppercase text-slate-500">Member Fee Account</Label>
                                     <FeeAccountSelect
                                         value={pay.fee_account}
@@ -204,8 +205,8 @@ function BulkFeePaymentCreate({ onBatchSuccess }) {
                                         disabled={isLoadingFees}
                                     />
                                 </div>
-                                <div className="lg:col-span-3 space-y-1.5">
-                                    <Label className="text-[11px] font-bold uppercase text-slate-500">Payment Amount</Label>
+                                <div className="lg:col-span-2 space-y-1.5">
+                                    <Label className="text-[11px] font-bold uppercase text-slate-500">Amount</Label>
                                     <div className="relative">
                                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-[10px] uppercase">KES</span>
                                         <Input
@@ -217,7 +218,16 @@ function BulkFeePaymentCreate({ onBatchSuccess }) {
                                         />
                                     </div>
                                 </div>
-                                <div className="lg:col-span-4 space-y-1.5">
+                                <div className="lg:col-span-3 space-y-1.5">
+                                    <Label className="text-[11px] font-bold uppercase text-slate-500">Transaction Date</Label>
+                                    <Input
+                                        type="date"
+                                        value={pay.transaction_date}
+                                        onChange={(e) => handleInputChange(index, "transaction_date", e.target.value)}
+                                        className="h-9 text-sm border-slate-200 focus:border-[#174271]"
+                                    />
+                                </div>
+                                <div className="lg:col-span-3 space-y-1.5">
                                     <Label className="text-[11px] font-bold uppercase text-slate-500">Payment Method</Label>
                                     <select
                                         value={pay.payment_method}
