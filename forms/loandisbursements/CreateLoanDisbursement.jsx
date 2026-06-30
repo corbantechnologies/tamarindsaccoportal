@@ -42,6 +42,7 @@ function CreateLoanDisbursementModal({ isOpen, onClose, refetch, application }) 
                     initialValues={{
                         loan_account: application?.loan_account || "",
                         amount: application?.approved_amount || application?.requested_amount || "",
+                        transaction_date: new Date().toISOString().split('T')[0],
                         disbursement_type: "Principal",
                         payment_method: "",
                         transaction_status: "Completed",
@@ -92,6 +93,20 @@ function CreateLoanDisbursementModal({ isOpen, onClose, refetch, application }) 
                                     required
                                     min="0.01"
                                     step="0.01"
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="transaction_date" className="text-black">
+                                    Transaction Date
+                                </Label>
+                                <Field
+                                    as={Input}
+                                    type="date"
+                                    id="transaction_date"
+                                    name="transaction_date"
+                                    className="border-black"
+                                    required
                                 />
                             </div>
 
