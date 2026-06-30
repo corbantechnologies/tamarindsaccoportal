@@ -62,6 +62,7 @@ function CreateDepositAdmin({ isOpen, onClose, refetchMember, accounts }) {
             payment_method: "",
             deposit_type: "",
             transaction_status: "Completed",
+            transaction_date: "",
             is_active: true,
           }}
           onSubmit={async (values) => {
@@ -153,6 +154,21 @@ function CreateDepositAdmin({ isOpen, onClose, refetchMember, accounts }) {
                   required
                   min="0.01"
                   step="0.01"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="transaction_date" className="text-black">
+                  Transaction Date
+                </Label>
+                <Field
+                  as={Input}
+                  type="date"
+                  id="transaction_date"
+                  name="transaction_date"
+                  className="border-black "
+                  placeholder="Enter transaction date"
+                  required
                 />
               </div>
 
