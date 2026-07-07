@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import React, { useState } from "react";
 import {
   Table,
@@ -20,6 +20,8 @@ import Link from "next/link";
 
 function SaccoMembersTable({ members, hideManageAction = false }) {
   const router = useRouter();
+  const pathname = usePathname();
+  const baseRoute = pathname?.includes("/superuser") ? "/superuser/members" : "/sacco-admin/members";
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
@@ -124,7 +126,7 @@ function SaccoMembersTable({ members, hideManageAction = false }) {
                           member?.member_no
                         ) : (
                           <Link
-                            href={`/sacco-admin/members/${member?.member_no}`}
+                            href={`${baseRoute}/${member?.member_no}`}
                           >
                             {member?.member_no}
                           </Link>
@@ -135,7 +137,7 @@ function SaccoMembersTable({ members, hideManageAction = false }) {
                           `${member?.first_name} ${member?.last_name}`
                         ) : (
                           <Link
-                            href={`/sacco-admin/members/${member?.member_no}`}
+                            href={`${baseRoute}/${member?.member_no}`}
                           >
                             {member?.first_name} {member?.last_name}
                           </Link>
@@ -167,7 +169,7 @@ function SaccoMembersTable({ members, hideManageAction = false }) {
                             size="sm"
                             onClick={() => {
                               router.push(
-                                `/sacco-admin/members/${member?.member_no}`
+                                `${baseRoute}/${member?.member_no}`
                               );
                             }}
                             className="bg-[#ea1315] hover:bg-[#c71012] text-white"
